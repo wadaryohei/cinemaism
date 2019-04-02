@@ -13,35 +13,27 @@
     </div>
 
     <div v-else>
-      <input type="search" v-model.trim="inputWord" placeholder="keyword enter">
-      <button @click="getMovieInfo()">検索</button>
-      <ul>
-        <li class="movie-lists" v-for="(movie, index) in movies" :key="index">
-          <p>{{ movie.id }}</p>
-            <router-link :to="{ name : 'movie-info', params : { id: movie.id }}">
-              <img with="200px" height="auto" :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
-            </router-link>
-        </li>
-      </ul>
+      <inputWord></inputWord>
     </div>
   </div>
 </template>
 
 <script>
 
-import search from '@/mixins/search'
+import inputWord from '@/components/InputWord'
 
 export default {
   name: 'home',
 
-  mixins: [
-    search
-  ],
-
   data () {
     return {
+      movies: {},
       currentStorages: []
     }
+  },
+
+  components: {
+    inputWord
   },
 
   created () {
@@ -66,7 +58,6 @@ export default {
     removeStorage (index) {
       this.currentStorages = JSON.parse(localStorage.getItem('moviesInfo'))
       this.currentStorages.splice(index, 1)
-      console.log(this.currentStorages.length)
       localStorage.setItem('moviesInfo', JSON.stringify(this.currentStorages))
       alert('削除しました')
     }

@@ -10,7 +10,7 @@
 
     <img :src="'http://image.tmdb.org/t/p/w300/' + moviesInfo.poster_path" :alt="moviesInfo.original_title">
 
-    <button @click="pushMovieStrage()">保存</button>
+    <button @click="pushMovieStorage()">保存</button>
   </div>
 </template>
 
@@ -43,13 +43,12 @@ export default {
         })
     },
 
-    pushMovieStrage () {
+    pushMovieStorage () {
       if (localStorage.getItem('moviesInfo') === null) {
         this.moviesInfoLists.push(this.moviesInfo)
         localStorage.setItem('moviesInfo', JSON.stringify(this.moviesInfoLists))
       } else {
         let currentStorage = JSON.parse(localStorage.getItem('moviesInfo'))
-        console.log(currentStorage)
         currentStorage.push(this.moviesInfo)
         localStorage.setItem('moviesInfo', JSON.stringify(currentStorage))
       }
@@ -65,14 +64,6 @@ export default {
     getApiKey () {
       return process.env.VUE_APP_API_KEY
     }
-  },
-
-  watch: {
-    /**
-     * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
-     * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
-     */
-    '$route': 'initMoviesInfo'
   }
 }
 </script>

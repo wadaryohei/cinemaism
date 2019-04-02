@@ -2,12 +2,15 @@ export default {
   data () {
     return {
       inputWord: '',
-      movies: {}
+      movies: {},
+      canMessageSubmit: false
     }
   },
 
   methods: {
-    getMovieInfo () {
+    getMovieInfo (event) {
+      if (event.keyCode !== 13) return
+
       let url = `https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.inputWord}`
       this.$axios.get(url)
         .then((res) => {

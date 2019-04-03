@@ -5,7 +5,7 @@
     <ul>
       <li class="movie-lists" v-for="(movie, index) in movies" :key="index">
         <p>{{ movie.id }}</p>
-          <router-link :to="{ name : 'movie-info', params : { id: movie.id } }">
+          <router-link :to="{ name : 'movie', params : { id: movie.id } }">
             <img with="200px" height="auto" :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
           </router-link>
       </li>

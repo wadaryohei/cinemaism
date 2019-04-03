@@ -17,7 +17,7 @@
 <script>
 
 export default {
-  name: 'MovieInfo',
+  name: 'Movie',
 
   data () {
     return {

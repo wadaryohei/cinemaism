@@ -32,7 +32,7 @@ export default {
   },
 
   created () {
-    this.getMovieInfo()
+    this.fetchData()
   },
 
   watch: {
@@ -40,17 +40,23 @@ export default {
      * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
      * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
      */
-    '$route': 'getMovieInfo'
+    '$route': 'fetchData'
   },
 
   computed: {
+    /**
+     * API_KEYを返すゲッター
+     */
     getApiKey () {
       return process.env.VUE_APP_API_KEY
     }
   },
 
   methods: {
-    getMovieInfo () {
+    /**
+     * routeから受け取ったqueryの値をもとにAPIを叩く
+     */
+    fetchData () {
       console.log(this.$route.query.q)
       this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}`)
         .then((res) => {

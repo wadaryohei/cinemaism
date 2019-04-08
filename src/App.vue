@@ -1,39 +1,63 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Header></Header>
+      <div class="l-container l-wrapper">
+        <router-view/>
+      </div>
   </div>
 </template>
 
 <script>
 
+import Header from '@/components/Header'
+
 export default {
-  name: 'App'
+  name: 'App',
+
+  components: {
+    Header
+  }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-li {
-  list-style: none;
+
+[v-cloak] {
+  display: none;
 }
 
-.movie-lists {
-  display: inline-block;
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-image: url('./assets/bg.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 }
+
+.about-image {
+  position: relative;
+}
+
+.l-wrapper {
+  padding: 160px 0 120px 0;
+  position: relative;
+
+  @include max(1015) {
+    padding: 120px 0;
+  }
+}
+
 </style>

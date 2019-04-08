@@ -1,19 +1,27 @@
 <template>
+
   <div>
     <div v-if="isLocalStorage">
-      <button @click="removeAllStorage()">一括で削除する</button>
-      <ul>
-        <li class="movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index">
-          <p>{{ currentStorage.id }}</p>
-            <router-link :to="{ name : 'movie', params : { id: currentStorage.id }}">
-              <img with="200px" height="auto" :src="'http://image.tmdb.org/t/p/w300/' + currentStorage.poster_path" :alt="currentStorage.original_title">
+      <ul class="l-row">
+        <li class="l-grid-12 movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index" v-cloak>
+            <router-link :to="{ name : 'movie', params : { id: currentStorage.id }}" class="movie-link">
+              <img class="movie-images" :src="'https://image.tmdb.org/t/p/w500/' + currentStorage.backdrop_path" :alt="currentStorage.original_title">
             </router-link>
-            <button @click="removeStorage(index)">削除する</button>
+            <div class="movie-title-wrapper">
+              <h2 class="movie-title">{{ currentStorage.original_title }}</h2>
+            </div>
+
+            <div class="movie-remove-btn-wrapper" @click="removeStorage(index)">
+              <i class="movie-remove-btn far fa-check-circle"></i>
+            </div>
         </li>
       </ul>
+      <button class="movie-removeAll-btn" @click="removeAllStorage()">一括で削除する</button>
+      <inputWord></inputWord>
     </div>
 
     <div v-else>
+      <img class="about-image" src="../assets/movie_01.png" alt="">
       <inputWord></inputWord>
     </div>
   </div>
@@ -85,3 +93,72 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.movie-lists {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.movie-remove-btn-wrapper {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  z-index: 1;
+}
+
+.movie-remove-btn {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 3rem;
+  cursor: pointer;
+  transition: .4s ease;
+
+  &:hover {
+    transition: .2s ease;
+    color: #1db954;
+  }
+}
+
+.movie-removeAll-btn {
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  cursor: pointer;
+  background-color: #191414;
+  color: #fff;
+}
+
+.movie-link {
+  display: block;
+}
+
+.movie-images {
+  height: 130px;
+  object-fit: cover;
+}
+
+.movie-title-wrapper {
+  position: absolute;
+  z-index: 1;
+  bottom: 10px;
+  right: 15px;
+  width: 80%;
+}
+
+.movie-title {
+  color: #fff;
+  margin-top: 5px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+</style>

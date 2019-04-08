@@ -1,19 +1,72 @@
 <template>
   <div>
-    <h2>ムービーの詳細画面です : {{ $route.params.id }}</h2>
-    <p>
-      {{ movies.original_title }}
-    </p>
-    <p>
-      {{ movies.overview }}
-    </p>
 
-    <img :src="'http://image.tmdb.org/t/p/w300/' + movies.poster_path" :alt="movies.original_title">
-    <button :disabled="hasLocalStorageMoviesId || hasCurrentId" @click="pushMovieStorage()">保存</button>
+    <div v-if="movies.backdrop_path"
+      class="movies-bg"
+      :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w1400_and_h450_face/' + movies.backdrop_path + ')'}"
+    >
+    </div>
+
+    <article class="movies-article">
+      <div v-if="movies.backdrop_path"
+        class="movies-backdrop-image"
+        :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
+      >
+      </div>
+      <div v-else class="movies-backdrop-image"></div>
+
+      <div class="movies-info-wrapper">
+        <div class="movies-info">
+          <figure class="movies-info-poster">
+            <img v-if="movies.poster_path"
+              :src="'https://image.tmdb.org/t/p/w300/' + movies.poster_path"
+              :alt="movies.original_title"
+            >
+          </figure>
+
+          <div class="movies-info-block">
+            <h2 class="movies-original-title" v-if="movies.original_title">{{ movies.original_title }}
+              <span class="movies-release-date" v-if="movies.release_date">({{ getMovieReleaseDate }})</span>
+            </h2>
+            <ul class="movies-genre-list" v-if="movies.genres">
+              <li class="movies-genre-listin" v-for="(genre, index) in movies.genres" :key="index">
+                {{ genre.name }}
+              </li>
+            </ul>
+            <p class="movies-average" v-if="movies.vote_average">{{ movies.vote_average }}</p>
+          </div>
+        </div>
+
+        <div class="l-grid-12 movies-overview" v-if="movies.overview">
+          <h3 class="movies-overview-header">作品詳細</h3>
+          <p class="movies-overview-lead">{{ movies.overview }}</p>
+        </div>
+
+        <div class="movies-save-wrapper">
+          <button
+            class="movies-save"
+            :class="{disabled: hasLocalStorageMoviesId.disabled || hasCurrentId}"
+            :disabled="hasLocalStorageMoviesId.disabled || hasCurrentId"
+            @click="pushMovieStorage()"
+          >{{ hasLocalStorageMoviesId.text }}</button>
+        </div>
+      </div>
+    </article>
   </div>
 </template>
 
 <script>
+
+const moviesSaveStatus = {
+  saved: {
+    disabled: true,
+    text: 'INBOXを表示する'
+  },
+  dontSaved: {
+    disabled: false,
+    text: 'INBOXに追加する'
+  }
+}
 
 export default {
   name: 'Movie',
@@ -23,7 +76,8 @@ export default {
       movies: {},
       moviesList: [],
       moviesId: [],
-      hasCurrentId: false
+      hasCurrentId: false,
+      localStorage: {}
     }
   },
 
@@ -40,6 +94,7 @@ export default {
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}`)
         .then((res) => {
           this.movies = res.data
+          this.localStorage = JSON.parse(localStorage.getItem('moviesId'))
         })
         .catch((error) => {
           // 取得できなかった場合のエラー処理が必要
@@ -84,20 +139,197 @@ export default {
     },
 
     /**
+     * 日付けをyyyyだけに切り出して返す
+     */
+    getMovieReleaseDate () {
+      if (this.movies.release_date) {
+        return this.movies.release_date.slice(0, 4)
+      }
+
+      return ''
+    },
+
+    /**
      * localStorageに保存されているMovieIDかチェックして存在するなら保存できない
      */
     hasLocalStorageMoviesId () {
       let paramsId = Number(this.$route.params.id)
       let currentStorageId = JSON.parse(localStorage.getItem('moviesId'))
 
-      if (currentStorageId === null) return
+      if (currentStorageId === null) {
+        return moviesSaveStatus.dontSaved
+      }
 
       let hasCurrentStorageId = currentStorageId.some(id => {
         return paramsId === id
       })
-      // return hasCurrentStorageId ? true : falseと同じ
-      return !!hasCurrentStorageId
+
+      return hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.movies-bg {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  filter: blur(5px);
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(0,0,0, .3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+}
+
+.movies-article {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+
+.movies-backdrop-image {
+  width: 100%;
+  height: 260px;
+  background-color: rgba(0,0,0, .4);
+}
+
+.movies-info-wrapper {
+  background-color: rgb(1, 2, 4);
+  border-bottom: solid 3px #1db954;
+  padding: 10px 0 30px;
+}
+
+.movies-info {
+  position: relative;
+  min-height: 125px;
+}
+
+.movies-info-poster {
+  position: absolute;
+  top: -70px;
+  left: 10px;
+  width: 130px;
+}
+
+.movies-info-block {
+   margin: 0 10px 0 150px;
+}
+
+.movies-genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.3rem;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+.movies-genre-listin {
+  margin-right: 5px;
+
+  &::after {
+    content: ',';
+  }
+
+  &:last-child:after {
+    content: '';
+  }
+}
+
+.movies-original-title {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  word-break: break-all;
+}
+
+.movies-release-date {
+  color: #929292;
+}
+
+.movies-average {
+  font-weight: 800;
+  font-size: .8rem;
+  background-color: #222;
+  color: #fff;
+  border-radius: 30px;
+  display: inline-block;
+  padding: 2.5px 20px 3px;
+  margin-top: 10px;
+}
+
+.movies-overview-header {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+.movies-overview {
+  color: #fff;
+  padding-top: 20px;
+}
+
+.movies-overview-lead {
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.movies-save-wrapper {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 3;
+
+  @include max(1015) {
+    position: static;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+.movies-save {
+  border: none;
+  outline: none;
+  padding: 0 20px;
+  border-radius: 30px;
+  width: 250px;
+  height: 48px;
+  font-size: 1.2rem;
+  letter-spacing: .1rem;
+  background-color: #1db954;
+  color: #fff;
+  cursor: pointer;
+  transition: .1s ease;
+
+  &:hover {
+    transition: .1s ease;
+    background-color: #1db954;
+  }
+
+  &.disabled {
+    background-color: #333333;
+    opacity: .6;
+    cursor: default;
+  }
+}
+
+</style>

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>Searchです</h1>
     <inputWord></inputWord>
-    <ul>
-      <li class="movie-lists" v-for="(movie, index) in movies" :key="index">
-        <p>{{ movie.id }}</p>
-          <router-link :to="{ name : 'movie', params : { id: movie.id } }">
-            <img with="200px" height="auto" :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
+    <ul class="l-row">
+      <li class="l-grid-6 movie-lists" v-for="(movie, index) in movies" :key="index" v-cloak>
+          <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
+            <img :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
           </router-link>
+          <h2 class="movie-title">{{ movie.original_title }}</h2>
+          <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
       </li>
     </ul>
   </div>
@@ -69,6 +69,28 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
+
+.movie-lists {
+  margin-top: 30px;
+}
+
+.movie-link {
+  display: block;
+}
+
+.movie-title {
+  color: #fff;
+  margin-top: 5px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.movie-release-date {
+  color: #929292;
+}
+
 </style>

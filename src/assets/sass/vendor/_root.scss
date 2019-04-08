@@ -1,0 +1,27 @@
+
+@charset "UTF-8";
+
+/* ======================================================
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-> sass -> vendor -> _root.scss
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+====================================================== */
+
+// grid
+$maxwidth: 420px; // change your site maxwidth
+$gutter: 10px; // change your gutter
+$maxcolumn: 12; //change your maxcolumn
+
+// breakpoint
+$breakpoint-default: 767px;
+$breakpoint-sp: 479px;
+$breakpoint-tablet: 767px;
+$breakpoint-pc: 979px;
+
+// color
+$black: #000;
+$white: #fff;

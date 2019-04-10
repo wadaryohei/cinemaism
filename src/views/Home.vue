@@ -2,6 +2,14 @@
 
   <div>
     <div v-if="isLocalStorage">
+
+      <Modal v-if="showModal" message="削除しますか？" @close="showModal = false">
+        <div slot="footer" class="modal-footer">
+          <button @click="showModal = false">Cancel</button>
+          <button @click="removeStorage()">Delete</button>
+        </div>
+      </Modal>
+
       <ul class="l-row">
         <li class="l-grid-12 movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index" v-cloak>
             <router-link :to="{ name : 'movie', params : { id: currentStorage.id }}" class="movie-link">
@@ -11,7 +19,7 @@
               <h2 class="movie-title">{{ currentStorage.original_title }}</h2>
             </div>
 
-            <div class="movie-remove-btn-wrapper" @click="removeStorage(index)">
+            <div class="movie-remove-btn-wrapper" @click="openModal(index)">
               <i class="movie-remove-btn far fa-check-circle"></i>
             </div>
         </li>
@@ -30,19 +38,23 @@
 <script>
 
 import inputWord from '@/components/InputWord'
+import Modal from '@/components/Modal'
 
 export default {
   name: 'home',
 
   components: {
-    inputWord
+    inputWord,
+    Modal
   },
 
   data () {
     return {
       movies: {},
       currentStorages: [],
-      currentStoragesId: []
+      currentStoragesId: [],
+      showModal: false,
+      modalIndex: 0
     }
   },
 
@@ -59,23 +71,32 @@ export default {
     /**
      * localStorageを配列に戻して削除してからlocalStorageに戻す
      */
-    removeStorage (index) {
+    removeStorage () {
       this.currentStorages = JSON.parse(localStorage.getItem('movies'))
       this.currentStoragesId = JSON.parse(localStorage.getItem('moviesId'))
 
-      this.currentStorages.splice(index, 1)
-      this.currentStoragesId.splice(index, 1)
+      this.currentStorages.splice(this.modalIndex, 1)
+      this.currentStoragesId.splice(this.modalIndex, 1)
 
       localStorage.setItem('movies', JSON.stringify(this.currentStorages))
       localStorage.setItem('moviesId', JSON.stringify(this.currentStoragesId))
-
-      alert('削除しました')
     },
 
+    /**
+     * localStorageを全削除する
+     */
     removeAllStorage () {
       localStorage.clear()
       alert('すべて削除しました')
       this.$router.go({ name: 'home' })
+    },
+
+    /**
+     * moviesのインデックスを取得してモーダルを開く
+     */
+    openModal (index) {
+      this.modalIndex = index
+      this.showModal = true
     }
   },
 
@@ -161,4 +182,27 @@ export default {
   text-overflow: ellipsis;
   text-align: right;
 }
+
+.modal-footer {
+  button {
+    margin-top: 20px;
+    border: none;
+    outline: none;
+    padding: 10px 30px;
+    cursor: pointer;
+
+    &:first-child {
+      background-color: #eee;
+      border: solid 1px #eee;
+      margin-right: 5px;
+    }
+
+    &:last-child {
+      background-color: #da0d2a;
+      border: solid 1px #da0d2a;
+      color: #fff;
+    }
+  }
+}
+
 </style>

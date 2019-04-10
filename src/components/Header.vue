@@ -1,12 +1,17 @@
 <template>
   <header class="header">
-    <p class="header-router-name">INBOX</p>
+    <p class="header-router-name" v-if="routerName">{{ routerName.toUpperCase() }}</p>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  computed: {
+    routerName () {
+      return this.$route.name === 'home' ? 'INBOX' : this.$route.name
+    }
+  }
 }
 </script>
 

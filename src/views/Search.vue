@@ -2,13 +2,15 @@
   <div>
     <inputWord></inputWord>
     <ul class="l-row">
-      <li class="l-grid-6 movie-lists" v-for="(movie, index) in movies" :key="index" v-cloak>
+      <transition-group name="movie-lists">
+      <li class="l-grid-6 movie-lists" v-for="movie in movies" :key="movie.id" v-cloak>
           <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
             <img :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
           </router-link>
           <h2 class="movie-title">{{ movie.original_title }}</h2>
           <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
       </li>
+      </transition-group>
     </ul>
   </div>
 </template>
@@ -70,6 +72,20 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
+.movie-lists-enter-active,
+.movie-lists-leave-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .5s ease;
+}
+
+.movie-lists-enter,
+.movie-lists-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: .5s ease;
+}
 
 .movie-lists {
   margin-top: 30px;

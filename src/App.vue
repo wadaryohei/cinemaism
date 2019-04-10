@@ -22,10 +22,6 @@ export default {
 
 <style lang="scss">
 
-[v-cloak] {
-  display: none;
-}
-
 #app {
   width: 100%;
   height: 100%;
@@ -45,10 +41,6 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
-}
-
-.about-image {
-  position: relative;
 }
 
 .l-wrapper {

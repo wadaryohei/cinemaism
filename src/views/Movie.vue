@@ -1,6 +1,8 @@
 <template>
   <div>
 
+    <Modal v-if="showModal" message="保存しました" @close="showModal = false"></Modal>
+
     <div v-if="movies.backdrop_path"
       class="movies-bg"
       :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w1400_and_h450_face/' + movies.backdrop_path + ')'}"
@@ -8,12 +10,12 @@
     </div>
 
     <article class="movies-article">
-      <div v-if="movies.backdrop_path"
+        <div v-if="movies.backdrop_path"
         class="movies-backdrop-image"
         :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
-      >
-      </div>
-      <div v-else class="movies-backdrop-image"></div>
+        >
+        </div>
+        <div v-else class="movies-backdrop-image"></div>
 
       <div class="movies-info-wrapper">
         <div class="movies-info">
@@ -28,12 +30,14 @@
             <h2 class="movies-original-title" v-if="movies.original_title">{{ movies.original_title }}
               <span class="movies-release-date" v-if="movies.release_date">({{ getMovieReleaseDate }})</span>
             </h2>
+
             <ul class="movies-genre-list" v-if="movies.genres">
               <li class="movies-genre-listin" v-for="(genre, index) in movies.genres" :key="index">
                 {{ genre.name }}
               </li>
             </ul>
-            <p class="movies-average" v-if="movies.vote_average">{{ movies.vote_average }}</p>
+
+            <p class="movies-average" v-if="movies.vote_average"><i class="fas fa-star"></i> {{ movies.vote_average }}</p>
           </div>
         </div>
 
@@ -57,6 +61,8 @@
 
 <script>
 
+import Modal from '@/components/Modal'
+
 const moviesSaveStatus = {
   saved: {
     disabled: true,
@@ -71,13 +77,18 @@ const moviesSaveStatus = {
 export default {
   name: 'Movie',
 
+  components: {
+    Modal
+  },
+
   data () {
     return {
       movies: {},
       moviesList: [],
       moviesId: [],
       hasCurrentId: false,
-      localStorage: {}
+      localStorage: {},
+      showModal: false
     }
   },
 
@@ -119,14 +130,13 @@ export default {
         let currentStorageId = JSON.parse(localStorage.getItem('moviesId'))
 
         currentStorage.push(this.movies)
-        currentStorageId.push(this.$route.params.id)
+        currentStorageId.push(Number(this.$route.params.id)) // 文字列なので数値に直してpushする
 
         localStorage.setItem('movies', JSON.stringify(currentStorage))
         localStorage.setItem('moviesId', JSON.stringify(currentStorageId))
       }
-
       this.hasCurrentId = true
-      alert('保存しました')
+      this.showModal = true
     }
   },
 
@@ -145,7 +155,6 @@ export default {
       if (this.movies.release_date) {
         return this.movies.release_date.slice(0, 4)
       }
-
       return ''
     },
 
@@ -164,6 +173,7 @@ export default {
         return paramsId === id
       })
 
+      console.log(hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved)
       return hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved
     }
   }
@@ -210,7 +220,7 @@ export default {
 }
 
 .movies-info-wrapper {
-  background-color: rgb(1, 2, 4);
+  background-color: #191414;
   border-bottom: solid 3px #1db954;
   padding: 10px 0 30px;
 }
@@ -265,12 +275,14 @@ export default {
 .movies-average {
   font-weight: 800;
   font-size: .8rem;
+  line-height: 2;
   background-color: #222;
   color: #fff;
   border-radius: 30px;
   display: inline-block;
-  padding: 2.5px 20px 3px;
+  padding: 2.5px 20px 4px;
   margin-top: 10px;
+  color: #ffcc00;
 }
 
 .movies-overview-header {

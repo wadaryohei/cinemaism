@@ -10,12 +10,12 @@
     </div>
 
     <article class="movies-article">
-        <div v-if="movies.backdrop_path"
+      <div v-if="movies.backdrop_path"
         class="movies-backdrop-image"
         :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
         >
-        </div>
-        <div v-else class="movies-backdrop-image"></div>
+      </div>
+      <div v-else class="movies-backdrop-image"></div>
 
       <div class="movies-info-wrapper">
         <div class="movies-info">

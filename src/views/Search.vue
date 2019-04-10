@@ -1,11 +1,17 @@
 <template>
   <div>
     <inputWord></inputWord>
-    <ul class="l-row">
+    <div v-if="movies.length === 0">
+      <p class="movies-empty">
+        「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
+      </p>
+    </div>
+    <ul v-else class="l-row">
       <transition-group name="movie-lists">
       <li class="l-grid-6 movie-lists" v-for="movie in movies" :key="movie.id" v-cloak>
           <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
-            <img :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
+            <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
+            <img v-else :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
           </router-link>
           <h2 class="movie-title">{{ movie.original_title }}</h2>
           <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
@@ -107,6 +113,11 @@ export default {
 
 .movie-release-date {
   color: #929292;
+}
+
+.movies-empty {
+  text-align: center;
+  color: #fff;
 }
 
 </style>

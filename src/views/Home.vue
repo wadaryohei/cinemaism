@@ -13,7 +13,8 @@
       <ul class="l-row">
         <li class="l-grid-12 movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index" v-cloak>
             <router-link :to="{ name : 'movie', params : { id: currentStorage.id }}" class="movie-link">
-              <img class="movie-images" :src="'https://image.tmdb.org/t/p/w500/' + currentStorage.backdrop_path" :alt="currentStorage.original_title">
+              <img v-if="currentStorage.backdrop_path === null" class="movie-images" src="../assets/default_image.png" :alt="currentStorage.original_title">
+              <img v-else class="movie-images" :src="'https://image.tmdb.org/t/p/w500/' + currentStorage.backdrop_path" :alt="currentStorage.original_title">
             </router-link>
             <div class="movie-title-wrapper">
               <h2 class="movie-title">{{ currentStorage.original_title }}</h2>
@@ -198,8 +199,8 @@ export default {
     }
 
     &:last-child {
-      background-color: #da0d2a;
-      border: solid 1px #da0d2a;
+      background-color: #b91d1d;
+      border: solid 1px #b91d1d;
       color: #fff;
     }
   }

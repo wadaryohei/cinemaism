@@ -107,3 +107,8 @@ p {
 [v-cloak] {
     display: none;
 }
+
+input[type=search] {
+    -webkit-appearance: textfield;
+    font-size: 1.6rem;
+}

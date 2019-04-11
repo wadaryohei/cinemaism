@@ -185,6 +185,10 @@ export default {
 }
 
 .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   button {
     margin-top: 20px;
     border: none;

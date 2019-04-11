@@ -95,6 +95,10 @@ export default {
 
 .movie-lists {
   margin-top: 30px;
+
+  @include max(767) {
+    @include l-grid(6);
+  }
 }
 
 .movie-link {

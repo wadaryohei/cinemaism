@@ -55,7 +55,9 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #fff;
+    background-color: #191414;
+    color: #fff;
+    font-weight: 800;
     padding: 40px 80px;
   }
 

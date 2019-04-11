@@ -23,5 +23,12 @@ export default new Router({
     },
     { path: '/search', name: 'search', component: () => import('./views/Search.vue') },
     { path: '/movie/:id', name: 'movie', component: () => import('./views/Movie.vue') }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 1, y: 0 }
+    }
+  }
 })

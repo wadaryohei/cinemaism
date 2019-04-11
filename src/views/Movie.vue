@@ -188,6 +188,7 @@ export default {
   background-size: cover;
   position: fixed;
   filter: blur(5px);
+  transform: translate3d(0, 0, 0);
   top: 0;
   left: 0;
   z-index: 1;

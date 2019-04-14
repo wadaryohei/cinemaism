@@ -97,10 +97,10 @@ export default {
   .movie-lists-enter-active {
     opacity: 1;
     transform: translateY(0);
-    transition: .6s ease;
+    transition: .4s ease;
 
     &.movies-lists-#{$i} {
-      transition-delay: #{200ms * $i}
+      transition-delay: #{50ms * $i}
     }
   }
 }
@@ -121,6 +121,7 @@ export default {
 
 .movie-link {
   display: block;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
 }
 
 .movie-title {

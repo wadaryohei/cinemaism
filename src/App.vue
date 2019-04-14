@@ -22,6 +22,10 @@ export default {
 
 <style lang="scss">
 
+body {
+  background-color: #191414;
+}
+
 #app {
   width: 100%;
   height: 100%;

@@ -81,6 +81,8 @@ export default {
 
       localStorage.setItem('movies', JSON.stringify(this.currentStorages))
       localStorage.setItem('moviesId', JSON.stringify(this.currentStoragesId))
+
+      this.$router.go({ name: 'home' })
     },
 
     /**

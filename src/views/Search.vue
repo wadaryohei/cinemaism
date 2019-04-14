@@ -1,35 +1,42 @@
 <template>
   <div>
-    <inputWord></inputWord>
-    <div v-if="movies.length === 0">
-      <p class="movies-empty">
-        「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
-      </p>
+    <div v-if="load">
+      <load></load>
     </div>
-    <ul v-else class="l-row">
-      <transition-group name="movie-lists">
-      <li class="l-grid-6 movie-lists" v-for="movie in movies" :key="movie.id" v-cloak>
-          <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
-            <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
-            <img v-else :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
-          </router-link>
-          <h2 class="movie-title">{{ movie.original_title }}</h2>
-          <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
-      </li>
+
+    <div v-else>
+      <inputWord></inputWord>
+      <div v-if="movies.length === 0">
+        <p class="movies-empty">
+          「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
+        </p>
+      </div>
+      <transition-group mode="in-out" v-else tag="ul" name="movie-lists" class="l-row movie-list">
+        <li class="l-grid-6 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
+            <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
+              <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
+              <img v-else :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
+            </router-link>
+            <h2 class="movie-title">{{ movie.original_title }}</h2>
+            <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
+        </li>
       </transition-group>
-    </ul>
+    </div>
   </div>
 </template>
 
 <script>
 
 import inputWord from '@/components/InputWord'
+import load from '@/components/Loading'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Search',
 
   components: {
-    inputWord
+    inputWord,
+    load
   },
 
   data () {
@@ -51,46 +58,57 @@ export default {
     '$route': 'fetchData'
   },
 
+  methods: {
+    /**
+     * routeから受け取ったqueryの値をもとにAPIを叩く
+     */
+    fetchData () {
+      this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}`)
+        .then((res) => {
+          this.movies = res.data.results
+          this.$store.commit('page/loaded')
+        })
+        .catch((err) => {
+          console.log(err + 'Don\'t get the movie info from API')
+        })
+    }
+  },
+
   computed: {
+    /**
+     * ロードの状態を取得
+     */
+    ...mapState({
+      load: state => state.page.load
+    }),
+
     /**
      * API_KEYを返すゲッター
      */
     getApiKey () {
       return process.env.VUE_APP_API_KEY
     }
-  },
-
-  methods: {
-    /**
-     * routeから受け取ったqueryの値をもとにAPIを叩く
-     */
-    fetchData () {
-      console.log(this.$route.query.q)
-      this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}`)
-        .then((res) => {
-          this.movies = res.data.results
-        })
-        .catch((err) => {
-          console.log(err + 'Don\'t get the movie info from API')
-        })
-    }
   }
 }
 </script>
 <style lang="scss" scoped>
 
-.movie-lists-enter-active,
-.movie-lists-leave-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: .5s ease;
+@for $i from 1 through 100 {
+  .movie-lists-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: .6s ease;
+
+    &.movies-lists-#{$i} {
+      transition-delay: #{200ms * $i}
+    }
+  }
 }
 
 .movie-lists-enter,
 .movie-lists-leave-to {
   opacity: 0;
-  transform: translateY(10px);
-  transition: .5s ease;
+  transform: translateY(30px);
 }
 
 .movie-lists {

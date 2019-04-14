@@ -58,18 +58,18 @@ export default {
     background-color: #191414;
     color: #fff;
     font-weight: 800;
-    padding: 40px 80px;
+    padding: 40px;
   }
 
   &-enter-active, &-leave-active {
-    transition: opacity 0.2s;
+    transition: opacity 0.1s;
 
     .modal-container {
-      transition: opacity 0.2s, transform 0.2s;
+      transition: opacity 0.1s, transform 0.1s;
     }
   }
   &-leave-active {
-    transition: opacity 0.6s ease 0.4s;
+    transition: opacity 0.3s ease 0.2s;
   }
 
   &-enter, &-leave-to {

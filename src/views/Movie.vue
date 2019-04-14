@@ -1,67 +1,74 @@
 <template>
   <div>
-
-    <Modal v-if="showModal" message="保存しました" @close="showModal = false"></Modal>
-
-    <div v-if="movies.backdrop_path"
-      class="movies-bg"
-      :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w1400_and_h450_face/' + movies.backdrop_path + ')'}"
-    >
+    <div v-if="load">
+      <load></load>
     </div>
 
-    <article class="movies-article">
+    <div v-else>
       <div v-if="movies.backdrop_path"
-        class="movies-backdrop-image"
-        :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
-        >
+        class="movies-bg"
+        :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w1400_and_h450_face/' + movies.backdrop_path + ')'}"
+      >
       </div>
-      <div v-else class="movies-backdrop-image"></div>
 
-      <div class="movies-info-wrapper">
-        <div class="movies-info">
-          <figure class="movies-info-poster">
-            <img v-if="movies.poster_path"
-              :src="'https://image.tmdb.org/t/p/w300/' + movies.poster_path"
-              :alt="movies.original_title"
-            >
-          </figure>
+      <article class="movies-article">
+        <div v-if="movies.backdrop_path"
+          class="movies-backdrop-image"
+          :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
+          >
+        </div>
+        <div v-else class="movies-backdrop-image"></div>
 
-          <div class="movies-info-block">
-            <h2 class="movies-original-title" v-if="movies.original_title">{{ movies.original_title }}
-              <span class="movies-release-date" v-if="movies.release_date">({{ getMovieReleaseDate }})</span>
-            </h2>
+        <div class="movies-info-wrapper">
+          <div class="movies-info">
+            <figure class="movies-info-poster">
+              <img v-if="movies.poster_path"
+                :src="'https://image.tmdb.org/t/p/w300/' + movies.poster_path"
+                :alt="movies.original_title"
+              >
+            </figure>
 
-            <ul class="movies-genre-list" v-if="movies.genres">
-              <li class="movies-genre-listin" v-for="(genre, index) in movies.genres" :key="index">
-                {{ genre.name }}
-              </li>
-            </ul>
+            <div class="movies-info-block">
+              <h2 class="movies-original-title" v-if="movies.original_title">{{ movies.original_title }}
+                <span class="movies-release-date" v-if="movies.release_date">({{ getMovieReleaseDate }})</span>
+              </h2>
 
-            <p class="movies-average" v-if="movies.vote_average"><i class="fas fa-star"></i> {{ movies.vote_average }}</p>
+              <ul class="movies-genre-list" v-if="movies.genres">
+                <li class="movies-genre-listin" v-for="(genre, index) in movies.genres" :key="index">
+                  {{ genre.name }}
+                </li>
+              </ul>
+
+              <p class="movies-average" v-if="movies.vote_average"><i class="fas fa-star"></i> {{ movies.vote_average }}</p>
+            </div>
+          </div>
+
+          <div class="l-grid-12 movies-overview" v-if="movies.overview">
+            <h3 class="movies-overview-header">作品詳細</h3>
+            <p class="movies-overview-lead">{{ movies.overview }}</p>
+          </div>
+
+          <div class="movies-save-wrapper">
+            <button
+              class="movies-save"
+              :class="{disabled: hasLocalStorageMoviesId.disabled || hasCurrentId}"
+              :disabled="hasLocalStorageMoviesId.disabled || hasCurrentId"
+              @click="pushMovieStorage()"
+            >{{ hasLocalStorageMoviesId.text }}</button>
           </div>
         </div>
+      </article>
 
-        <div class="l-grid-12 movies-overview" v-if="movies.overview">
-          <h3 class="movies-overview-header">作品詳細</h3>
-          <p class="movies-overview-lead">{{ movies.overview }}</p>
-        </div>
-
-        <div class="movies-save-wrapper">
-          <button
-            class="movies-save"
-            :class="{disabled: hasLocalStorageMoviesId.disabled || hasCurrentId}"
-            :disabled="hasLocalStorageMoviesId.disabled || hasCurrentId"
-            @click="pushMovieStorage()"
-          >{{ hasLocalStorageMoviesId.text }}</button>
-        </div>
-      </div>
-    </article>
+      <Modal v-if="showModal" message="保存しました" @close="showModal = false"></Modal>
+    </div>
   </div>
 </template>
 
 <script>
 
 import Modal from '@/components/Modal'
+import load from '@/components/Loading'
+import { mapState } from 'vuex'
 
 const moviesSaveStatus = {
   saved: {
@@ -78,7 +85,8 @@ export default {
   name: 'Movie',
 
   components: {
-    Modal
+    Modal,
+    load
   },
 
   data () {
@@ -93,6 +101,7 @@ export default {
   },
 
   created () {
+    this.$store.commit('page/loading')
     this.fetchData()
   },
 
@@ -105,6 +114,7 @@ export default {
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}`)
         .then((res) => {
           this.movies = res.data
+          this.$store.commit('page/loaded')
           this.localStorage = JSON.parse(localStorage.getItem('moviesId'))
         })
         .catch((error) => {
@@ -142,6 +152,13 @@ export default {
 
   computed: {
     /**
+     * ロードの状態を取得
+     */
+    ...mapState({
+      load: state => state.page.load
+    }),
+
+    /**
      * API_KEYを返すゲッター
      */
     getApiKey () {
@@ -172,8 +189,6 @@ export default {
       let hasCurrentStorageId = currentStorageId.some(id => {
         return paramsId === id
       })
-
-      console.log(hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved)
       return hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved
     }
   }

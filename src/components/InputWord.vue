@@ -21,6 +21,14 @@ export default {
     }
   },
 
+  watch: {
+    /**
+     * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
+     * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
+     */
+    '$route': 'getMovieInfo'
+  },
+
   methods: {
     /**
      * 検索ボックスの値をrouter先にqueryで渡して遷移する
@@ -29,12 +37,9 @@ export default {
       if (event.keyCode !== 13) return
       // @see https://router.vuejs.org/ja/guide/essentials/navigation.html
       this.$router.push({ name: 'search', query: { q: this.inputWord } })
+      this.$store.commit('page/loading')
       this.$refs.input.blur()
     }
-  },
-
-  watch: {
-    '$route': 'getMovieInfo'
   }
 }
 </script>
@@ -51,7 +56,7 @@ export default {
   line-height: 1.5;
   border-radius: 30px;
   width: 250px;
-  transform: scale(1);
+  transform: scale(.9);
   font-size: 1.6rem;
   letter-spacing: .1rem;
   background-color: #1db954;

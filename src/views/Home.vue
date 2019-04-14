@@ -203,8 +203,8 @@ export default {
     }
 
     &:last-child {
-      background-color: #b91d1d;
-      border: solid 1px #b91d1d;
+      background-color: #1db954;
+      border: solid 1px #1db954;
       color: #fff;
     }
   }

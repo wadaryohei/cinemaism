@@ -3,7 +3,7 @@
   <header class="header">
     <p class="header-inbox">
       <a class="header-inbox-link" href="/">
-        <span class="header-inbox-number">{{ movieNumbers }}</span>
+        <span class="header-inbox-number">{{ (inboxCount === 0) ? localStorageCount : inboxCount }}</span>
         <i class="fas fa-inbox"></i>
       </a>
     </p>
@@ -16,6 +16,7 @@
 
 <script>
 
+import { mapState } from 'vuex'
 import sideMenu from '@/components/SideMenu'
 
 export default {
@@ -27,7 +28,7 @@ export default {
 
   data () {
     return {
-      movieNumbers: 0,
+      localStorageCount: 0,
       isOpenMenu: false
     }
   },
@@ -41,10 +42,16 @@ export default {
    * 保存されているムービー数を取得
    */
     getMovieNumbers () {
+      // nullなら表示しない
       if (localStorage.getItem('moviesId') === null) {
         return false
       }
-      this.movieNumbers = JSON.parse(localStorage.getItem('moviesId')).length
+      // ローカルストレージを取得
+      let currentLocalStorage = JSON.parse(localStorage.getItem('moviesId'))
+      // Vuexのstateが0ならローカルストレージの配列数を取得
+      if (this.inboxCount === 0) {
+        this.localStorageCount = currentLocalStorage.length
+      }
     },
 
     openMenu () {
@@ -53,6 +60,9 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      inboxCount: state => state.inbox.inboxCount
+    }),
     /**
      * 現在のルート名を取得
      */

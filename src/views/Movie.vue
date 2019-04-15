@@ -134,6 +134,8 @@ export default {
 
         this.moviesId.push(this.$route.params.id)
         localStorage.setItem('moviesId', JSON.stringify(this.moviesId))
+
+        this.$store.commit('inbox/countStorages', this.moviesId)
       } else {
         // すでにlocalStorageに存在するなら配列に戻してから保存する
         let currentStorage = JSON.parse(localStorage.getItem('movies'))
@@ -144,6 +146,8 @@ export default {
 
         localStorage.setItem('movies', JSON.stringify(currentStorage))
         localStorage.setItem('moviesId', JSON.stringify(currentStorageId))
+
+        this.$store.commit('inbox/countStorages', currentStorageId)
       }
       this.hasCurrentId = true
       this.showModal = true

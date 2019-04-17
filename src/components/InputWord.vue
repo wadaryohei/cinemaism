@@ -2,7 +2,7 @@
   <div>
     <input
       class="searchbox"
-      type="search"
+      type="text"
       placeholder="映画のタイトルを検索する"
       v-model.trim="inputWord"
       @keydown.enter="getMovieInfo"
@@ -33,7 +33,7 @@ export default {
     /**
      * 検索ボックスの値をrouter先にqueryで渡して遷移する
      */
-    getMovieInfo () {
+    getMovieInfo (event) {
       if (event.keyCode !== 13) return
       // @see https://router.vuejs.org/ja/guide/essentials/navigation.html
       this.$router.push({ name: 'search', query: { q: this.inputWord } })

@@ -1,50 +1,39 @@
 <template>
   <div>
-    <div v-if="load">
-      <load></load>
+    <inputWord></inputWord>
+    <div v-if="movies.length === 0">
+      <p class="movies-empty">
+        「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
+      </p>
     </div>
-
-    <div v-else>
-      <inputWord></inputWord>
-      <div v-if="movies.length === 0">
-        <p class="movies-empty">
-          「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
-        </p>
-      </div>
-      <transition-group mode="out-in" v-else tag="ul" name="movie-lists" class="l-row movie-list">
-        <li class="l-grid-6 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
-            <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
-              <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
-              <img v-else :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
-            </router-link>
-            <h2 class="movie-title">{{ movie.original_title }}</h2>
-            <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
-        </li>
-      </transition-group>
-    </div>
+    <transition-group mode="out-in" v-else tag="ul" name="movie-lists" class="l-row movie-list">
+      <li class="l-grid-6 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
+          <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
+            <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
+            <img v-else :src="'http://image.tmdb.org/t/p/w300/' + movie.poster_path" :alt="movie.original_title">
+          </router-link>
+          <h2 class="movie-title">{{ movie.original_title }}</h2>
+          <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
+      </li>
+    </transition-group>
   </div>
 </template>
 
 <script>
 
 import inputWord from '@/components/InputWord'
-import load from '@/components/Loading'
-import { mapState } from 'vuex'
 
 export default {
   name: 'Search',
 
   components: {
-    inputWord,
-    load
+    inputWord
   },
 
   data () {
     return {
       movies: {},
-      inputWord: '',
-      back: false,
-      transitionName: 'movie-lists'
+      inputWord: ''
     }
   },
 
@@ -77,13 +66,6 @@ export default {
   },
 
   computed: {
-    /**
-     * ロードの状態を取得
-     */
-    ...mapState({
-      load: state => state.page.load
-    }),
-
     /**
      * API_KEYを返すゲッター
      */

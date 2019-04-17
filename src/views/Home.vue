@@ -199,8 +199,9 @@ export default {
     cursor: pointer;
 
     &:first-child {
-      background-color: #eee;
+      background: transparent;
       border: solid 1px #eee;
+      color: #eee;
       margin-right: 5px;
     }
 

@@ -92,10 +92,7 @@ export default {
   data () {
     return {
       movies: {},
-      moviesList: [],
-      moviesId: [],
       hasCurrentId: false,
-      localStorage: {},
       showModal: false
     }
   },
@@ -115,7 +112,6 @@ export default {
         .then((res) => {
           this.movies = res.data
           this.$store.commit('page/loaded')
-          this.localStorage = JSON.parse(localStorage.getItem('moviesId'))
         })
         .catch((error) => {
           // 取得できなかった場合のエラー処理が必要
@@ -127,22 +123,24 @@ export default {
      * localStorageにMovieを保存
      */
     pushMovieStorage () {
+      let moviesList = []
+      let moviesId = []
       // もしnullなら普通にlocalStorageに保存
       if (localStorage.getItem('movies') === null) {
-        this.moviesList.push(this.movies)
-        localStorage.setItem('movies', JSON.stringify(this.moviesList))
+        moviesList.push(this.movies)
+        localStorage.setItem('movies', JSON.stringify(moviesList))
 
-        this.moviesId.push(this.$route.params.id)
-        localStorage.setItem('moviesId', JSON.stringify(this.moviesId))
+        moviesId.push(this.movies.id)
+        localStorage.setItem('moviesId', JSON.stringify(moviesId))
 
-        this.$store.commit('inbox/countStorages', this.moviesId)
+        this.$store.commit('inbox/countStorages', moviesId)
       } else {
         // すでにlocalStorageに存在するなら配列に戻してから保存する
         let currentStorage = JSON.parse(localStorage.getItem('movies'))
         let currentStorageId = JSON.parse(localStorage.getItem('moviesId'))
 
         currentStorage.push(this.movies)
-        currentStorageId.push(Number(this.$route.params.id)) // 文字列なので数値に直してpushする
+        currentStorageId.push(Number(this.movies.id)) // 文字列なので数値に直してpushする
 
         localStorage.setItem('movies', JSON.stringify(currentStorage))
         localStorage.setItem('moviesId', JSON.stringify(currentStorageId))
@@ -158,9 +156,7 @@ export default {
     /**
      * ロードの状態を取得
      */
-    ...mapState({
-      load: state => state.page.load
-    }),
+    ...mapState('page', ['load']),
 
     /**
      * API_KEYを返すゲッター
@@ -186,9 +182,7 @@ export default {
       let paramsId = Number(this.$route.params.id)
       let currentStorageId = JSON.parse(localStorage.getItem('moviesId'))
 
-      if (currentStorageId === null) {
-        return moviesSaveStatus.dontSaved
-      }
+      if (currentStorageId === null) return moviesSaveStatus.dontSaved
 
       let hasCurrentStorageId = currentStorageId.some(id => {
         return paramsId === id

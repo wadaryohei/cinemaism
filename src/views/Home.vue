@@ -11,7 +11,7 @@
       </Modal>
 
       <ul class="l-row">
-        <li class="l-grid-12 movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index" v-cloak>
+        <li class="l-grid-12 movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index">
             <router-link :to="{ name : 'movie', params : { id: currentStorage.id }}" class="movie-link">
               <img v-if="currentStorage.backdrop_path === null" class="movie-images" src="../assets/default_image.png" :alt="currentStorage.original_title">
               <img v-else class="movie-images" :src="'https://image.tmdb.org/t/p/w500/' + currentStorage.backdrop_path" :alt="currentStorage.original_title">
@@ -53,7 +53,6 @@ export default {
     return {
       movies: {},
       currentStorages: [],
-      currentStoragesId: [],
       showModal: false,
       modalIndex: 0
     }
@@ -74,14 +73,8 @@ export default {
      */
     removeStorage () {
       this.currentStorages = JSON.parse(localStorage.getItem('movies'))
-      this.currentStoragesId = JSON.parse(localStorage.getItem('moviesId'))
-
       this.currentStorages.splice(this.modalIndex, 1)
-      this.currentStoragesId.splice(this.modalIndex, 1)
-
       localStorage.setItem('movies', JSON.stringify(this.currentStorages))
-      localStorage.setItem('moviesId', JSON.stringify(this.currentStoragesId))
-
       this.$router.go({ name: 'home' })
     },
 

@@ -34,26 +34,23 @@ export default {
   },
 
   created () {
-    this.getMovieNumbers()
+    this.getMovieCount()
   },
 
   methods: {
   /**
    * 保存されているムービー数を取得
    */
-    getMovieNumbers () {
+    getMovieCount () {
       // nullなら表示しない
-      if (localStorage.getItem('moviesId') === null) {
+      if (localStorage.getItem('movies') === null) {
         return false
       }
-      // ローカルストレージを取得
-      let currentLocalStorage = JSON.parse(localStorage.getItem('moviesId'))
       // Vuexのstateが0ならローカルストレージの配列数を取得
       if (this.inboxCount === 0) {
-        this.localStorageCount = currentLocalStorage.length
+        this.localStorageCount = JSON.parse(localStorage.getItem('movies')).length
       }
     },
-
     openMenu () {
       this.isOpenMenu = !this.isOpenMenu
     }
@@ -76,7 +73,7 @@ export default {
      * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
      * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
      */
-    '$route': 'getMovieNumbers'
+    '$route': 'getMovieCount'
   }
 }
 </script>

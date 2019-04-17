@@ -123,29 +123,18 @@ export default {
      * localStorageにMovieを保存
      */
     pushMovieStorage () {
-      let moviesList = []
-      let moviesId = []
+      let movies = []
       // もしnullなら普通にlocalStorageに保存
       if (localStorage.getItem('movies') === null) {
-        moviesList.push(this.movies)
-        localStorage.setItem('movies', JSON.stringify(moviesList))
-
-        moviesId.push(this.movies.id)
-        localStorage.setItem('moviesId', JSON.stringify(moviesId))
-
-        this.$store.commit('inbox/countStorages', moviesId)
+        movies.push(this.movies)
+        localStorage.setItem('movies', JSON.stringify(movies))
+        this.$store.commit('inbox/countStorages', movies)
       } else {
-        // すでにlocalStorageに存在するなら配列に戻してから保存する
+      // すでにlocalStorageに存在するなら配列に戻してから保存する
         let currentStorage = JSON.parse(localStorage.getItem('movies'))
-        let currentStorageId = JSON.parse(localStorage.getItem('moviesId'))
-
         currentStorage.push(this.movies)
-        currentStorageId.push(Number(this.movies.id)) // 文字列なので数値に直してpushする
-
         localStorage.setItem('movies', JSON.stringify(currentStorage))
-        localStorage.setItem('moviesId', JSON.stringify(currentStorageId))
-
-        this.$store.commit('inbox/countStorages', currentStorageId)
+        this.$store.commit('inbox/countStorages', currentStorage)
       }
       this.hasCurrentId = true
       this.showModal = true
@@ -156,7 +145,9 @@ export default {
     /**
      * ロードの状態を取得
      */
-    ...mapState('page', ['load']),
+    ...mapState({
+      load: state => state.page.load
+    }),
 
     /**
      * API_KEYを返すゲッター
@@ -180,13 +171,13 @@ export default {
      */
     hasLocalStorageMoviesId () {
       let paramsId = Number(this.$route.params.id)
-      let currentStorageId = JSON.parse(localStorage.getItem('moviesId'))
+      let currentStorage = JSON.parse(localStorage.getItem('movies'))
+      if (currentStorage === null) return moviesSaveStatus.dontSaved
 
-      if (currentStorageId === null) return moviesSaveStatus.dontSaved
-
-      let hasCurrentStorageId = currentStorageId.some(id => {
-        return paramsId === id
+      let hasCurrentStorageId = currentStorage.some(movies => {
+        return paramsId === movies.id
       })
+
       return hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved
     }
   }

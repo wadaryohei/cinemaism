@@ -26,26 +26,22 @@
         </li>
       </ul>
       <button class="movie-removeAll-btn" @click="removeAllStorage()">一括で削除する</button>
-      <inputWord></inputWord>
     </div>
 
     <div v-else>
       <img class="about-image" src="../assets/movie_01.png" alt="">
-      <inputWord></inputWord>
     </div>
   </div>
 </template>
 
 <script>
 
-import inputWord from '@/components/InputWord'
 import Modal from '@/components/Modal'
 
 export default {
   name: 'home',
 
   components: {
-    inputWord,
     Modal
   },
 

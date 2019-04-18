@@ -1,12 +1,11 @@
 <template>
   <div>
-    <inputWord></inputWord>
     <div v-if="movies.length === 0">
       <p class="movies-empty">
         「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
       </p>
     </div>
-    <transition-group mode="out-in" v-else tag="ul" name="movie-lists" class="l-row movie-list">
+    <transition-group v-else mode="out-in" tag="ul" name="movie-lists" class="l-row movie-list">
       <li class="l-grid-6 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
           <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
             <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
@@ -21,14 +20,8 @@
 
 <script>
 
-import inputWord from '@/components/InputWord'
-
 export default {
   name: 'Search',
-
-  components: {
-    inputWord
-  },
 
   data () {
     return {

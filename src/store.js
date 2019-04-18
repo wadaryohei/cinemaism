@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import page from '@/store/page'
-import inbox from '@/store/inbox'
+import page from '@/stores/page'
+import inbox from '@/stores/inbox'
 
 Vue.use(Vuex)
 

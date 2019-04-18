@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="load">
-      <load></load>
+      <Loading></Loading>
     </div>
 
     <div v-else>
@@ -12,40 +12,52 @@
       </div>
 
       <article class="movies-article">
-        <div v-if="movies.backdrop_path"
-          class="movies-backdrop-image"
-          :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
-          >
-        </div>
-        <div v-else class="movies-backdrop-image"></div>
-
+        <transition name="movies-backdrop" appear tag="div">
+          <div v-if="movies.backdrop_path"
+            class="movies-backdrop-image"
+            :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
+            >
+          </div>
+          <div v-else class="movies-backdrop-image"></div>
+        </transition>
         <div class="movies-info-wrapper">
           <div class="movies-info">
-            <figure class="movies-info-poster">
-              <img v-if="movies.poster_path"
-                :src="'https://image.tmdb.org/t/p/w300/' + movies.poster_path"
-                :alt="movies.original_title"
-              >
-            </figure>
+            <transition name="movies-poster" appear tag="div">
+              <figure class="movies-info-poster">
+                <img v-if="movies.poster_path"
+                  :src="'https://image.tmdb.org/t/p/w300/' + movies.poster_path"
+                  :alt="movies.original_title"
+                >
+              </figure>
+            </transition>
 
             <div class="movies-info-block">
-              <h2 class="movies-original-title" v-if="movies.original_title">{{ movies.original_title }}
-                <span class="movies-release-date" v-if="movies.release_date">({{ getMovieReleaseDate }})</span>
-              </h2>
+              <transition name="movies-title" appear tag="div">
+                <h2 class="movies-original-title" v-if="movies.original_title">{{ movies.original_title }}
+                  <span class="movies-release-date" v-if="movies.release_date">({{ getMovieReleaseDate }})</span>
+                </h2>
+              </transition>
 
-              <ul class="movies-genre-list" v-if="movies.genres">
-                <li class="movies-genre-listin" v-for="(genre, index) in movies.genres" :key="index">
-                  {{ genre.name }}
-                </li>
-              </ul>
+              <transition name="movies-genre" appear tag="div">
+                <ul class="movies-genre-list" v-if="movies.genres">
+                  <li class="movies-genre-listin" v-for="(genre, index) in movies.genres" :key="index">
+                    {{ genre.name }}
+                  </li>
+                </ul>
+              </transition>
 
               <p class="movies-average" v-if="movies.vote_average"><i class="fas fa-star"></i> {{ movies.vote_average }}</p>
             </div>
           </div>
 
           <div class="l-grid-12 movies-overview" v-if="movies.overview">
-            <h3 class="movies-overview-header">作品詳細</h3>
-            <p class="movies-overview-lead">{{ movies.overview }}</p>
+            <transition name="movies-overview-header" appear tag="div">
+              <h3 class="movies-overview-header">作品詳細</h3>
+            </transition>
+
+            <transition name="movies-overview-lead" appear tag="div">
+              <p class="movies-overview-lead">{{ movies.overview }}</p>
+            </transition>
           </div>
 
           <div class="movies-save-wrapper">
@@ -67,7 +79,7 @@
 <script>
 
 import Modal from '@/components/Modal'
-import load from '@/components/Loading'
+import Loading from '@/components/Loading'
 import { mapState } from 'vuex'
 
 const moviesSaveStatus = {
@@ -86,7 +98,7 @@ export default {
 
   components: {
     Modal,
-    load
+    Loading
   },
 
   data () {
@@ -347,6 +359,83 @@ export default {
     opacity: .6;
     cursor: default;
   }
+}
+
+.movies-backdrop-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+}
+
+.movies-backdrop-enter,
+.movies-backdrop-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-poster-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: .2s;
+}
+
+.movies-poster-enter,
+.movies-poster-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-title-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: .4s;
+}
+
+.movies-title-enter,
+.movies-title-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-genre-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: .6s;
+}
+
+.movies-genre-enter,
+.movies-genre-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-overview-header-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: .8s;
+}
+
+.movies-overview-header-enter,
+.movies-overview-header-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-overview-lead-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: 1s;
+}
+
+.movies-overview-lead-enter,
+.movies-overview-lead-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 </style>

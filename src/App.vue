@@ -4,18 +4,28 @@
       <div class="l-container l-wrapper">
         <router-view/>
       </div>
+    <InputWord v-if="showInput"></InputWord>
   </div>
 </template>
 
 <script>
 
 import Header from '@/components/Header'
+import InputWord from '@/components/InputWord'
 
 export default {
   name: 'App',
 
   components: {
-    Header
+    Header,
+    InputWord
+  },
+
+  computed: {
+    showInput () {
+      console.log(this.$route.name)
+      return this.$route.name !== 'movie'
+    }
   }
 }
 </script>

@@ -46,7 +46,9 @@
                 </ul>
               </transition>
 
-              <p class="movies-average" v-if="movies.vote_average"><i class="fas fa-star"></i> {{ movies.vote_average }}</p>
+              <transition name="movies-average" appear tag="div">
+                <p class="movies-average" v-if="movies.vote_average"><i class="fas fa-star"></i> {{ movies.vote_average }}</p>
+              </transition>
             </div>
           </div>
 
@@ -412,11 +414,24 @@ export default {
   transform: translateY(20px);
 }
 
-.movies-overview-header-enter-active {
+.movies-average-enter-active {
   opacity: 1;
   transform: translateY(0);
   transition: .4s ease;
   transition-delay: .8s;
+}
+
+.movies-average-enter,
+.movies-average-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-overview-header-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: 1s;
 }
 
 .movies-overview-header-enter,
@@ -429,7 +444,7 @@ export default {
   opacity: 1;
   transform: translateY(0);
   transition: .4s ease;
-  transition-delay: 1s;
+  transition-delay: 1.2s;
 }
 
 .movies-overview-lead-enter,

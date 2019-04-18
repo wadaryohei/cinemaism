@@ -49,7 +49,7 @@ export default {
   position: fixed;
   bottom: 40px;
   right: 40px;
-  z-index: 3;
+  z-index: 1;
   border: none;
   outline: none;
   padding: 15px 13px;

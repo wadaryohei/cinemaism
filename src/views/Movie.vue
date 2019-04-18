@@ -366,7 +366,7 @@ export default {
 .movies-backdrop-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: .4s ease;
+  transition: 1s ease;
 }
 
 .movies-backdrop-enter,

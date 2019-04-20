@@ -138,7 +138,7 @@ export default {
      */
     pushMovieStorage () {
       let movies = []
-      // もしnullなら普通にlocalStorageに保存
+      // もしlocalStorageがnullなら普通にlocalStorageに保存
       if (localStorage.getItem('movies') === null) {
         movies.push(this.movies)
         localStorage.setItem('movies', JSON.stringify(movies))

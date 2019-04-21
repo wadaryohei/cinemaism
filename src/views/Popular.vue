@@ -6,7 +6,7 @@
       </p>
     </div>
     <transition-group v-else mode="out-in" tag="ul" name="movie-lists" class="l-row movie-list">
-      <li class="l-grid-6 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
+      <li class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
           <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
             <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
             <img v-else :src="'http://image.tmdb.org/t/p/w300' + movie.poster_path" :alt="movie.original_title">
@@ -15,17 +15,23 @@
           <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
       </li>
     </transition-group>
+
+    <div class="pagination-wrapper">
+      <span v-if="pageCount !== 1" class="pagination pagination-preview" @click="PreviewPage()">← PREVIEW</span>
+      <span class="pagination pagination-next" @click="NextPage()">NEXT →</span>
+    </div>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'Search',
+  name: 'Popular',
 
   data () {
     return {
-      movies: {}
+      movies: {},
+      pageCount: 1
     }
   },
 
@@ -46,14 +52,31 @@ export default {
      * routeから受け取ったqueryの値をもとにAPIを叩く
      */
     fetchData () {
-      this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}&language=${this.getLanguage}`)
+      if (JSON.parse(localStorage.getItem('pageCount')) === null) {
+        this.pageCount = 1
+      } else {
+        this.pageCount = JSON.parse(localStorage.getItem('pageCount'))
+      }
+
+      this.$axios.get(`https://api.themoviedb.org/3/movie/popular?page=${this.pageCount}&api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data.results
-          this.$store.commit('page/loaded')
         })
         .catch((err) => {
           console.log(err + 'Don\'t get the movie info from API')
         })
+    },
+
+    PreviewPage () {
+      this.pageCount--
+      localStorage.setItem('pageCount', JSON.stringify(this.pageCount))
+      this.$router.push({ name: 'popular', query: { page: this.pageCount } })
+    },
+
+    NextPage () {
+      this.pageCount++
+      localStorage.setItem('pageCount', JSON.stringify(this.pageCount))
+      this.$router.push({ name: 'popular', query: { page: this.pageCount } })
     }
   },
 
@@ -63,17 +86,13 @@ export default {
      */
     getApiKey () {
       return process.env.VUE_APP_API_KEY
-    },
-
-    getLanguage () {
-      return 'ja'
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 
-@for $i from 1 through 100 {
+@for $i from 1 through 20 {
   .movie-lists-enter-active {
     opacity: 1;
     transform: translateY(0);
@@ -121,6 +140,35 @@ export default {
 .movies-empty {
   text-align: center;
   color: #fff;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,.3);
+  margin-top: 3rem;
+}
+
+.pagination {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  color: #fff;
+  display: block;
+  text-align: center;
+}
+
+.pagination-preview {
+  width: 50%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pagination-next {
+  color: #1db954;
+  width: 50%;
+  text-align: right;
+  cursor: pointer;
 }
 
 </style>

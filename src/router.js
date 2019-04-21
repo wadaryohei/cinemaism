@@ -31,6 +31,7 @@ export default new Router({
       component: loadVIew('About')
     },
     { path: '/search', name: 'search', component: loadVIew('Search') },
+    { path: '/popular', name: 'popular', component: loadVIew('Popular') },
     { path: '/movie/:id', name: 'movie', component: loadVIew('Movie') }
   ],
   scrollBehavior (to, from, savedPosition) {

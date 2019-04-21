@@ -14,7 +14,7 @@
         <li class="l-grid-12 movie-lists" v-for="(currentStorage, index) in currentStorages" :key="index">
             <router-link :to="{ name : 'movie', params : { id: currentStorage.id }}" class="movie-link">
               <img v-if="currentStorage.backdrop_path === null" class="movie-images" src="../assets/default_image.png" :alt="currentStorage.original_title">
-              <img v-else class="movie-images" :src="'https://image.tmdb.org/t/p/w500/' + currentStorage.backdrop_path" :alt="currentStorage.original_title">
+              <img v-else class="movie-images" :src="'https://image.tmdb.org/t/p/w500' + currentStorage.backdrop_path" :alt="currentStorage.original_title">
             </router-link>
             <div class="movie-title-wrapper">
               <h2 class="movie-title">{{ currentStorage.original_title }}</h2>
@@ -93,6 +93,10 @@ export default {
   },
 
   computed: {
+    getLanguage () {
+      return 'ja'
+    },
+
     /**
      * localStorageの要素が0かどうか調べる
      */

@@ -122,7 +122,7 @@ export default {
      */
     fetchData () {
       let id = this.$route.params.id
-      this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}`)
+      this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data
           this.$store.commit('page/loaded')
@@ -170,6 +170,10 @@ export default {
       return process.env.VUE_APP_API_KEY
     },
 
+    getLanguage () {
+      return 'ja'
+    },
+
     /**
      * 日付けをyyyyだけに切り出して返す
      */
@@ -209,7 +213,7 @@ export default {
   transform: translate3d(0, 0, 0);
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 0;
 
   &::after {
     content: '';
@@ -222,7 +226,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 0;
   }
 }
 

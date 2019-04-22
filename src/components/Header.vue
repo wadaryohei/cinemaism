@@ -12,6 +12,7 @@
 
     <div class="sidebar" :class="{open: isMenuActive}">
       <nav class="sidebar-in">
+        <img src="../assets/nav_logo.png" alt="">
         <transition-group tag="ul" class="sidebar-menulist" name="sidebar-menus" appear>
           <li v-if="isMenuActive" class="sidebar-menulistin" key="sidebar-menu-1">
             <router-link to="/" class="sidebar-menulistin-link">
@@ -174,16 +175,17 @@ export default {
 .sidebar-in {
   width: 100%;
   height: 100%;
-  padding: 0 4rem;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .sidebar-menulist {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  border-top: 1px solid rgba(255,255,255,.2);
 }
 
 .sidebar-menulistin {

@@ -22,14 +22,7 @@ export default new Router({
       name: 'home',
       component: Home
     },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: loadVIew('About')
-    },
+    { path: '/about', name: 'about', component: loadVIew('About') },
     { path: '/search', name: 'search', component: loadVIew('Search') },
     { path: '/popular', name: 'popular', component: loadVIew('Popular') },
     { path: '/movie/:id', name: 'movie', component: loadVIew('Movie') }

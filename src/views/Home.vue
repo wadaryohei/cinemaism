@@ -121,6 +121,7 @@ export default {
   z-index: 0;
   background-image: url('../assets/movie_01.png');
   background-position: center center;
+  background-repeat: no-repeat;
   background-size: cover;
 }
 
@@ -130,7 +131,11 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40%;
+  width: 25%;
+
+  @include max(767) {
+    width: 40%;
+  }
 }
 
 .movie-lists {

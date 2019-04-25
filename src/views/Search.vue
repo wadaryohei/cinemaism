@@ -49,10 +49,9 @@ export default {
       this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data.results
-          this.$store.commit('page/loaded')
         })
         .catch((err) => {
-          console.log(err + 'Don\'t get the movie info from API')
+          console.log(err + 'Don\'t get the movies info from API')
         })
     }
   },
@@ -65,6 +64,9 @@ export default {
       return process.env.VUE_APP_API_KEY
     },
 
+    /**
+     * languageを返すゲッター
+     */
     getLanguage () {
       return 'ja'
     }
@@ -73,7 +75,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-@for $i from 1 through 100 {
+@for $i from 1 through 20 {
   .movie-lists-enter-active {
     opacity: 1;
     transform: translateY(0);

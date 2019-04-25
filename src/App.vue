@@ -23,7 +23,6 @@ export default {
 
   computed: {
     showInput () {
-      console.log(this.$route.name)
       if (this.$route.name === 'about' || this.$route.name === 'movie') {
         return false
       }

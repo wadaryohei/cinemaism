@@ -24,7 +24,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Popular',
 
@@ -90,6 +89,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 
 @for $i from 1 through 20 {

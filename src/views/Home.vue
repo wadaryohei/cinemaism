@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <div v-if="isLocalStorage">
 
@@ -28,8 +27,8 @@
       <button class="movie-removeAll-btn" @click="removeAllStorage()">一括で削除する</button>
     </div>
 
-    <div v-else>
-      <img class="about-image" src="../assets/movie_01.png" alt="">
+    <div class="movie-about-image" v-else>
+      <img class="movie-about-logo" src="../assets/logo.png" alt="logo">
     </div>
   </div>
 </template>
@@ -112,6 +111,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.movie-about-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-image: url('../assets/movie_01.png');
+  background-position: center center;
+  background-size: cover;
+}
+
+.movie-about-logo {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+}
 
 .movie-lists {
   width: 100%;

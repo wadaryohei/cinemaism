@@ -57,7 +57,7 @@ export default {
         this.pageCount = JSON.parse(localStorage.getItem('pageCount'))
       }
 
-      this.$axios.get(`https://api.themoviedb.org/3/movie/popular?page=${this.pageCount}&api_key=${this.getApiKey}&language=${this.getLanguage}`)
+      this.$axios.get(`https://api.themoviedb.org/3/movie/popular?page=${this.pageCount}&api_key=${this.getApiKey}`)
         .then((res) => {
           this.movies = res.data.results
         })

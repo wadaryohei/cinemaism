@@ -170,8 +170,11 @@ export default {
       return process.env.VUE_APP_API_KEY
     },
 
+    /**
+     * languageを返すゲッター
+     */
     getLanguage () {
-      return 'ja'
+      return process.env.VUE_APP_API_LANGUAGE
     },
 
     /**

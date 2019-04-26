@@ -46,7 +46,7 @@ export default {
      * routeから受け取ったqueryの値をもとにAPIを叩く
      */
     fetchData () {
-      this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}&language=${this.getLanguage}`)
+      this.$axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${this.getApiKey}&query=${this.$route.query.q}`)
         .then((res) => {
           this.movies = res.data.results
         })
@@ -62,13 +62,6 @@ export default {
      */
     getApiKey () {
       return process.env.VUE_APP_API_KEY
-    },
-
-    /**
-     * languageを返すゲッター
-     */
-    getLanguage () {
-      return 'ja'
     }
   }
 }

@@ -14,7 +14,7 @@
       <img class="about-subimage" src="../assets/about/about_01.png" alt="1.映画のタイトル名を検索">
       <h2 class="about-subheader">1.映画のタイトル名を検索</h2>
       <p class="about-sublead">
-        INBOXページにある右下の検索ボタン、またはサイドメニューのSEARCHから検索画面にアクセスし、観たい、気になっている映画のタイトル名を入力しましょう。
+        INBOXページの下部にある検索ボタンから観たい、または気になっている映画のタイトル名を入力してサーチ画面にアクセスしましょう。
       </p>
     </div>
 

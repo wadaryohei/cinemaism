@@ -9,7 +9,7 @@
       <li class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
           <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
             <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
-            <img v-else :src="'http://image.tmdb.org/t/p/w300' + movie.poster_path" :alt="movie.original_title">
+            <img v-else :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" :alt="movie.original_title">
           </router-link>
           <h2 class="movie-title">{{ movie.original_title }}</h2>
           <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>

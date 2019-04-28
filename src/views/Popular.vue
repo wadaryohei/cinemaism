@@ -5,16 +5,8 @@
         「{{ $route.query.q }}」は存在しませんでした。<br />再度検索してください。
       </p>
     </div>
-    <transition-group v-else mode="out-in" tag="ul" name="movie-lists" class="l-row movie-list">
-      <li class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
-          <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
-            <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
-            <img v-else :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" :alt="movie.original_title">
-          </router-link>
-          <h2 class="movie-title">{{ movie.original_title }}</h2>
-          <span class="movie-release-date" v-if="movie.release_date">({{ movie.release_date.slice(0, 4) }})</span>
-      </li>
-    </transition-group>
+
+    <movie-lists v-else :movies="movies"></movie-lists>
 
     <div class="pagination-wrapper">
       <span v-if="pageCount !== 1" class="pagination pagination-preview" @click="PreviewPage()">← PREVIEW</span>
@@ -24,8 +16,15 @@
 </template>
 
 <script>
+
+import MovieLists from '@/components/MovieLists'
+
 export default {
   name: 'Popular',
+
+  components: {
+    MovieLists
+  },
 
   data () {
     return {

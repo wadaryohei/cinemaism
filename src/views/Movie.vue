@@ -87,8 +87,8 @@
 
           <div class="l-grid-12 movies-recommendations" v-if="moviesReconmmendations.length > 0">
             <h3 class="movies-overview-header">あなたにオススメの作品</h3>
-            <ul class="movies-recommendations-list">
-              <li class="l-grid-4 movies-recommendations-listin" v-for="(movieReconmmendations, index) in moviesReconmmendations" :key="index">
+            <transition-group name="movies-recommendations" appear tag="ul" class="movies-recommendations-list">
+              <li class="l-grid-4 movies-recommendations-listin" v-for="movieReconmmendations in moviesReconmmendations" :key="movieReconmmendations.id">
                 <router-link :to="{ name : 'movie', params : { id: movieReconmmendations.id } }">
                   <figure class="">
                     <img v-if="movieReconmmendations.poster_path"
@@ -99,7 +99,7 @@
                 </router-link>
                 <h2 class="movies-recommendations-title" v-if="movieReconmmendations.original_title">{{ movieReconmmendations.original_title }}</h2>
               </li>
-            </ul>
+            </transition-group>
           </div>
 
         </div>
@@ -593,6 +593,19 @@ export default {
 
 .movies-overview-lead-enter,
 .movies-overview-lead-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-recommendations-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: 1.4s;
+}
+
+.movies-recommendations-enter,
+.movies-recommendations-leave-to {
   opacity: 0;
   transform: translateY(20px);
 }

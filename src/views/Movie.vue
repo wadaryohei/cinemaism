@@ -84,6 +84,24 @@
               @click="pushMovieStorage()"
             >{{ hasLocalStorageMoviesId.text }}</button>
           </div>
+
+          <div class="l-grid-12 movies-recommendations" v-if="moviesReconmmendations.length > 0">
+            <h3 class="movies-overview-header">あなたにオススメの作品</h3>
+            <ul class="movies-recommendations-list">
+              <li class="l-grid-4 movies-recommendations-listin" v-for="(movieReconmmendations, index) in moviesReconmmendations" :key="index">
+                <router-link :to="{ name : 'movie', params : { id: movieReconmmendations.id } }">
+                  <figure class="">
+                    <img v-if="movieReconmmendations.poster_path"
+                      :src="'https://image.tmdb.org/t/p/w300/' + movieReconmmendations.poster_path"
+                      :alt="movieReconmmendations.original_title"
+                    >
+                  </figure>
+                </router-link>
+                <h2 class="movies-recommendations-title" v-if="movieReconmmendations.original_title">{{ movieReconmmendations.original_title }}</h2>
+              </li>
+            </ul>
+          </div>
+
         </div>
       </article>
 
@@ -121,6 +139,7 @@ export default {
     return {
       movies: {},
       moviesVideos: {},
+      moviesReconmmendations: {},
       hasCurrentId: false,
       showModal: false
     }
@@ -130,6 +149,7 @@ export default {
     this.$store.commit('page/loading')
     this.fetchData()
     this.fetchDataVideos()
+    this.fetchDataReconmmendations()
   },
 
   methods: {
@@ -141,6 +161,7 @@ export default {
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data
+          console.log()
           this.$store.commit('page/loaded')
         })
         .catch((error) => {
@@ -157,6 +178,21 @@ export default {
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${this.getApiKey}`)
         .then((res) => {
           this.moviesVideos = res.data.results[0]
+        })
+        .catch((error) => {
+          console.log(error + 'Don\'t get movies videos.')
+        })
+    },
+
+    /**
+     * paramsで受けとったidをもとにトレーラー情報を取得する
+     */
+    fetchDataReconmmendations () {
+      let id = this.$route.params.id
+      this.$axios.get(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${this.getApiKey}`)
+        .then((res) => {
+          this.moviesReconmmendations = res.data.results
+          console.log(this.moviesReconmmendations)
         })
         .catch((error) => {
           console.log(error + 'Don\'t get movies videos.')
@@ -231,6 +267,14 @@ export default {
 
       return hasCurrentStorageId ? moviesSaveStatus.saved : moviesSaveStatus.dontSaved
     }
+  },
+
+  watch: {
+    /**
+     * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
+     * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
+     */
+    '$route': 'fetchData'
   }
 }
 </script>
@@ -382,6 +426,42 @@ export default {
   font-weight: 800;
   font-size: 1.2rem;
   line-height: 1.6;
+}
+
+.movies-recommendations {
+  margin-top: 30px;
+}
+
+.movies-recommendations-list {
+  margin: 0 -10px;
+}
+
+.movies-recommendations-listin {
+  margin-top: 20px;
+
+  &:first-child,
+  &:nth-child(2),
+  &:nth-child(3) {
+    margin-top: 0;
+  }
+
+  @include max(767) {
+    &:nth-child(3) {
+      margin-top: 20px;
+    }
+
+    @include l-grid(6)
+  }
+}
+
+.movies-recommendations-title {
+  color: #fff;
+  margin-top: 5px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .movies-save-wrapper {

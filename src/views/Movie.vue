@@ -276,6 +276,7 @@ export default {
     '$route' () {
       this.fetchData()
       this.fetchDataReconmmendations()
+      this.hasCurrentId = false
     }
   }
 }

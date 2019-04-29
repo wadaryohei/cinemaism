@@ -187,7 +187,7 @@ export default {
 
 .movie-title-wrapper {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   bottom: 10px;
   right: 15px;
   width: 80%;

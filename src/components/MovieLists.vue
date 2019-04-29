@@ -25,6 +25,7 @@ export default {
 
   // computed: {
   //   /**
+  //    * @todo :styleで実装するとpopularページのページネーション遷移時にtransitionがバグるので一旦実装保留します
   //    * transitionDelayを返すゲッター
   //    */
   //   TRANSITION_DELAY () {

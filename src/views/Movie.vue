@@ -86,8 +86,11 @@
           </div>
 
           <div class="l-grid-12 movies-recommendations" v-if="moviesReconmmendations.length > 0">
-            <h3 class="movies-overview-header">あなたにオススメの作品</h3>
-            <transition-group name="movies-recommendations" appear tag="ul" class="movies-recommendations-list">
+            <transition name="movies-recommendations-header" appear tag="div">
+              <h3 class="movies-recommendations-header">あなたにオススメの作品</h3>
+            </transition>
+
+            <transition-group name="movies-recommendations-list" appear tag="ul" class="movies-recommendations-list">
               <li class="l-grid-4 movies-recommendations-listin" v-for="movieReconmmendations in moviesReconmmendations" :key="movieReconmmendations.id">
                 <router-link :to="{ name : 'movie', params : { id: movieReconmmendations.id } }">
                   <figure class="">
@@ -408,6 +411,11 @@ export default {
   color: #ffcc00;
 }
 
+.movies-overview {
+  color: #fff;
+  padding-top: 20px;
+}
+
 .movies-overview-header {
   color: #fff;
   font-size: 1.4rem;
@@ -416,15 +424,18 @@ export default {
   word-break: break-all;
 }
 
-.movies-overview {
-  color: #fff;
-  padding-top: 20px;
-}
-
 .movies-overview-lead {
   font-weight: 800;
   font-size: 1.2rem;
   line-height: 1.6;
+}
+
+.movies-recommendations-header {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  word-break: break-all;
 }
 
 .movies-recommendations {
@@ -593,15 +604,28 @@ export default {
   transform: translateY(20px);
 }
 
-.movies-recommendations-enter-active {
+.movies-recommendations-header-enter-active {
   opacity: 1;
   transform: translateY(0);
   transition: .4s ease;
   transition-delay: 1.4s;
 }
 
-.movies-recommendations-enter,
-.movies-recommendations-leave-to {
+.movies-recommendations-header-enter,
+.movies-recommendations-header-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.movies-recommendations-list-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
+  transition-delay: 1.6s;
+}
+
+.movies-recommendations-list-enter,
+.movies-recommendations-list-leave-to {
   opacity: 0;
   transform: translateY(20px);
 }

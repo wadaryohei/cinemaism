@@ -101,7 +101,6 @@
               </li>
             </transition-group>
           </div>
-
         </div>
       </article>
 
@@ -146,10 +145,10 @@ export default {
   },
 
   created () {
-    this.$store.commit('page/loading')
     this.fetchData()
     this.fetchDataVideos()
     this.fetchDataReconmmendations()
+    this.$store.commit('page/loaded')
   },
 
   methods: {
@@ -161,8 +160,6 @@ export default {
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data
-          console.log()
-          this.$store.commit('page/loaded')
         })
         .catch((error) => {
           // 取得できなかった場合のエラー処理が必要
@@ -185,14 +182,13 @@ export default {
     },
 
     /**
-     * paramsで受けとったidをもとにトレーラー情報を取得する
+     * paramsで受けとったidをもとにレコメンド情報を取得する
      */
     fetchDataReconmmendations () {
       let id = this.$route.params.id
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${this.getApiKey}`)
         .then((res) => {
           this.moviesReconmmendations = res.data.results
-          console.log(this.moviesReconmmendations)
         })
         .catch((error) => {
           console.log(error + 'Don\'t get movies videos.')

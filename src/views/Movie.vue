@@ -12,13 +12,27 @@
       </div>
 
       <article class="movies-article">
-        <transition name="movies-backdrop" appear tag="div">
+        <transition name="movies-backdrop" appear tag="div" class="movies-backdrop">
+          <div class="movies-backdrop-wrapper">
           <div v-if="movies.backdrop_path"
             class="movies-backdrop-image"
             :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
             >
           </div>
           <div v-else class="movies-backdrop-image"></div>
+            <ul class="movies-info-link">
+              <li class="movies-info-link-listsin" v-if="movies.homepage">
+                <a :href="movies.homepage" target="_blank">
+                  <i class="fas fa-link"></i>
+                </a>
+              </li>
+              <li class="movies-info-link-listsin" v-if="moviesVideos">
+                <a :href="`https://www.youtube.com/watch?v=${moviesVideos.key}`" target="_blank">
+                  <i class="fab fa-youtube"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </transition>
         <div class="movies-info-wrapper">
           <div class="movies-info">
@@ -106,6 +120,7 @@ export default {
   data () {
     return {
       movies: {},
+      moviesVideos: {},
       hasCurrentId: false,
       showModal: false
     }
@@ -114,6 +129,7 @@ export default {
   created () {
     this.$store.commit('page/loading')
     this.fetchData()
+    this.fetchDataVideos()
   },
 
   methods: {
@@ -130,6 +146,20 @@ export default {
         .catch((error) => {
           // 取得できなかった場合のエラー処理が必要
           console.log(error + 'Don\'t get moviesinfo.')
+        })
+    },
+
+    /**
+     * paramsで受けとったidをもとにトレーラー情報を取得する
+     */
+    fetchDataVideos () {
+      let id = this.$route.params.id
+      this.$axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${this.getApiKey}`)
+        .then((res) => {
+          this.moviesVideos = res.data.results[0]
+        })
+        .catch((error) => {
+          console.log(error + 'Don\'t get movies videos.')
         })
     },
 
@@ -237,6 +267,30 @@ export default {
   position: relative;
   z-index: 1;
   box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+
+.movies-backdrop-wrapper {
+  position: relative;
+}
+
+.movies-info-link {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  z-index: 100;
+  padding: .6rem;
+}
+
+.movies-info-link-listsin {
+  display: inline-block;
+  a {
+    color: #fff;
+    font-size: 2rem;
+
+    &:last-child {
+      margin-left: 1rem;
+    }
+  }
 }
 
 .movies-backdrop-image {

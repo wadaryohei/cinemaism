@@ -24,6 +24,9 @@ export default {
   ],
 
   computed: {
+    /**
+     * transitionDelayを返すゲッター
+     */
     TRANSITION_DELAY () {
       return TRANSITION_DELAY
     }

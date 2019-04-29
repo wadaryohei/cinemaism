@@ -65,12 +65,18 @@ export default {
         })
     },
 
+    /**
+     * ページを戻ったときの処理
+     */
     PreviewPage () {
       this.pageCount--
       localStorage.setItem('pageCount', JSON.stringify(this.pageCount))
       this.$router.push({ name: 'popular', query: { page: this.pageCount } })
     },
 
+    /**
+     * ページを進んだときの処理
+     */
     NextPage () {
       this.pageCount++
       localStorage.setItem('pageCount', JSON.stringify(this.pageCount))
@@ -91,16 +97,10 @@ export default {
 
 <style lang="scss" scoped>
 
-@for $i from 1 through 20 {
-  .movie-lists-enter-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: .4s ease;
-
-    &.movies-lists-#{$i} {
-      transition-delay: #{50ms * $i}
-    }
-  }
+.movie-lists-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
 }
 
 .movie-lists-enter,

@@ -274,7 +274,10 @@ export default {
      * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
      * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
      */
-    '$route': 'fetchData'
+    '$route' () {
+      this.fetchData()
+      this.fetchDataReconmmendations()
+    }
   }
 }
 </script>

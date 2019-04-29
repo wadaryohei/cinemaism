@@ -1,6 +1,6 @@
 <template>
   <transition-group mode="out-in" tag="ul" name="movie-lists" class="l-row movie-list">
-    <li class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
+    <li :style="{transitionDelay: TRANSITION_DELAY * index + 'ms'}" class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id">
         <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
           <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
           <img v-else :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" :alt="movie.original_title">
@@ -12,26 +12,30 @@
 </template>
 
 <script>
+
+// リストをフェードインするときのdelayタイム
+const TRANSITION_DELAY = 50
+
 export default {
   name: 'MovieLists',
 
   props: [
     'movies'
-  ]
+  ],
+
+  computed: {
+    TRANSITION_DELAY () {
+      return TRANSITION_DELAY
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-@for $i from 1 through 20 {
-  .movie-lists-enter-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: .4s ease;
-
-    &.movies-lists-#{$i} {
-      transition-delay: #{50ms * $i}
-    }
-  }
+.movie-lists-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .4s ease;
 }
 
 .movie-lists-enter,

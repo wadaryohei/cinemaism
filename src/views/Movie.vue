@@ -189,12 +189,12 @@ export default {
      */
     fetchDataReconmmendations () {
       let id = this.$route.params.id
-      this.$axios.get(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${this.getApiKey}`)
+      this.$axios.get(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.moviesReconmmendations = res.data.results
         })
         .catch((error) => {
-          console.log(error + 'Don\'t get movies videos.')
+          console.log(error + 'Don\'t get movies Reconmmendations.')
         })
     },
 

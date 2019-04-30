@@ -56,7 +56,7 @@ export default {
         this.pageCount = JSON.parse(localStorage.getItem('pageCount'))
       }
 
-      this.$axios.get(`https://api.themoviedb.org/3/movie/popular?page=${this.pageCount}&api_key=${this.getApiKey}`)
+      this.$axios.get(`https://api.themoviedb.org/3/movie/popular?page=${this.pageCount}&api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data.results
         })
@@ -90,51 +90,19 @@ export default {
      */
     getApiKey () {
       return process.env.VUE_APP_API_KEY
+    },
+
+    /**
+     * languageを返すゲッター
+     */
+    getLanguage () {
+      return process.env.VUE_APP_API_LANGUAGE
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
-.movie-lists-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: .4s ease;
-}
-
-.movie-lists-enter,
-.movie-lists-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.movie-lists {
-  margin-top: 30px;
-
-  @include max(767) {
-    @include l-grid(6);
-  }
-}
-
-.movie-link {
-  display: block;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-}
-
-.movie-title {
-  color: #fff;
-  margin-top: 5px;
-  font-size: 1.4rem;
-  font-weight: 800;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.movie-release-date {
-  color: #929292;
-}
 
 .movies-empty {
   text-align: center;

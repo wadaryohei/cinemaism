@@ -148,6 +148,7 @@ export default {
   },
 
   created () {
+    // @todo fetchまわりの処理は後々async/awaitでひとつにまとめる
     this.fetchData()
     this.fetchDataVideos()
     this.fetchDataReconmmendations()

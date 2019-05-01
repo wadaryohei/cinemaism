@@ -7,7 +7,7 @@
     <div v-else>
       <div v-if="movies.backdrop_path"
         class="movies-bg"
-        :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w1400_and_h450_face/' + movies.backdrop_path + ')'}"
+        :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/original/' + movies.backdrop_path + ')'}"
       >
       </div>
 
@@ -16,7 +16,7 @@
           <div class="movies-backdrop-wrapper">
           <div v-if="movies.backdrop_path"
             class="movies-backdrop-image"
-            :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/w500/' + movies.backdrop_path + ')'}"
+            :style="{ 'backgroundImage': 'url(https://image.tmdb.org/t/p/original/' + movies.backdrop_path + ')'}"
             >
           </div>
           <div v-else class="movies-backdrop-image"></div>
@@ -345,6 +345,8 @@ export default {
   width: 100%;
   height: 260px;
   background-color: rgba(0,0,0, .4);
+  background-position: center center;
+  background-size: cover;
 }
 
 .movies-info-wrapper {

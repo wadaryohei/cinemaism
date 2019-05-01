@@ -1,6 +1,6 @@
 <template>
   <transition-group mode="out-in" tag="ul" name="movie-lists" class="l-row movie-list">
-    <li class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id" ref="movie">
+    <li class="l-grid-4 movie-lists" :class="`movies-lists-${index + 1}`" v-for="(movie, index) in movies" :key="movie.id" :data-index="index" v-cloak>
         <router-link :to="{ name : 'movie', params : { id: movie.id } }" class="movie-link">
           <img v-if="movie.poster_path === null" src="../assets/default_image.png" :alt="movie.original_title">
           <img v-else :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" :alt="movie.original_title">
@@ -27,7 +27,7 @@ export default {
   .movie-lists-enter-active {
     opacity: 1;
     transform: translateY(0);
-    transition: .4s ease;
+    transition: .4s ease 1s;
 
     &.movies-lists-#{$i} {
       transition-delay: #{50ms * $i}

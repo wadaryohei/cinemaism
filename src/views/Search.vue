@@ -7,7 +7,6 @@
     </div>
 
     <movie-lists v-else :movies="movies"></movie-lists>
-
   </div>
 </template>
 
@@ -37,7 +36,9 @@ export default {
      * @see https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
      * ルートが変更されたらこのメソッドを再び呼び出すためにwatchで監視
      */
-    '$route': 'fetchData'
+    $route () {
+      this.fetchData()
+    }
   },
 
   methods: {
@@ -56,6 +57,7 @@ export default {
   },
 
   computed: {
+
     /**
      * API_KEYを返すゲッター
      */
@@ -72,11 +74,10 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
 .movies-empty {
   text-align: center;
   color: #fff;
 }
-
 </style>

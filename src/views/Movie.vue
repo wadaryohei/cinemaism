@@ -151,7 +151,6 @@ export default {
     this.fetchData()
     this.fetchDataVideos()
     this.fetchDataReconmmendations()
-    this.$store.commit('page/loaded')
   },
 
   methods: {
@@ -159,10 +158,12 @@ export default {
      * paramsで受けとったidをもとにAPIを叩く
      */
     fetchData () {
+      this.$store.commit('page/loading')
       let id = this.$route.params.id
       this.$axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.getApiKey}&language=${this.getLanguage}`)
         .then((res) => {
           this.movies = res.data
+          this.$store.commit('page/loaded')
         })
         .catch((error) => {
           // 取得できなかった場合のエラー処理が必要
@@ -620,7 +621,7 @@ export default {
 
 .movies-recommendations-list-enter-active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   transition: .4s ease;
   transition-delay: 1.6s;
 }
@@ -628,7 +629,7 @@ export default {
 .movies-recommendations-list-enter,
 .movies-recommendations-list-leave-to {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(20px) scale(0);
 }
 
 </style>

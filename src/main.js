@@ -11,7 +11,7 @@ require('@/assets/sass/style.scss')
 Vue.prototype.$axios = axios
 
 Vue.use(VueAnalytics, {
-  id: 'UA-101156703-5',
+  id: process.env.VUE_APP_API_GOOGLE_ANALYTICS,
   router
 })
 

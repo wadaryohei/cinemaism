@@ -534,7 +534,7 @@ export default {
 .movies-poster-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: .4s ease;
+  transition: 1s ease;
   transition-delay: .2s;
 }
 

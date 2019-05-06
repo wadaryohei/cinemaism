@@ -1,39 +1,18 @@
-# cinemaism
+# CINEMAISM
 
-## Project setup
-```
-yarn install
-```
+CINEMAISM [https://cinemaism.net/](https://cinemaism.net/)
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+## CINEMAISMとは？
+CINEMAISMはあなたのムービーライフをより充実に過ごすための視聴管理TODOアプリです。
+映画のタイトルに関する検索や、いま巷で人気な映画などを、自分だけのインボックスに保存して管理することが出来ます。
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+## 3ステップで分かる使い方
 
-### Run your tests
-```
-yarn run test
-```
+### 1.映画のタイトル名を検索
+INBOXページの下部にある検索ボタンから観たい、または気になっている映画のタイトル名を入力してサーチ画面にアクセスしましょう。
 
-### Lints and fixes files
-```
-yarn run lint
-```
+### 2.映画をINBOXに追加する
+検索結果に表示された作品から作品詳細画面へ、画面下部の追加するボタンからINBOXに映画を追加します。
 
-### Run your end-to-end tests
-```
-yarn run test:e2e
-```
-
-### Run your unit tests
-```
-yarn run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 3.視聴したらチェックする
+視聴した作品は各左上にあるチェックボタンを押してINBOXから削除、または一括削除をすることも可能です。

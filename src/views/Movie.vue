@@ -147,11 +147,11 @@ export default {
     }
   },
 
-  created () {
+  async created () {
     // @todo fetchまわりの処理は後々async/awaitでひとつにまとめる
-    this.fetchData()
-    this.fetchDataVideos()
-    this.fetchDataReconmmendations()
+    await this.fetchData()
+    await this.fetchDataVideos()
+    await this.fetchDataReconmmendations()
   },
 
   methods: {
@@ -277,6 +277,7 @@ export default {
      */
     $route () {
       this.fetchData()
+      this.fetchDataVideos()
       this.fetchDataReconmmendations()
       this.hasCurrentId = false
     }

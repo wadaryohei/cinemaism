@@ -23,7 +23,6 @@ export default {
 .loader {
   color: #ffffff;
   font-size: 10px;
-  margin: 80px auto;
   position: relative;
   text-indent: -9999em;
   -webkit-transform: translateZ(0);

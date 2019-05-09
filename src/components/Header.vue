@@ -183,6 +183,11 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  img {
+    max-width: 100%;
+    flex-shrink: 0;
+  }
 }
 
 .sidebar-menulist {

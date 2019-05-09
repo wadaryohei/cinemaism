@@ -58,6 +58,7 @@ export default {
     background-color: #191414;
     color: #fff;
     font-weight: 800;
+    width: 100%;
     padding: 40px;
   }
 

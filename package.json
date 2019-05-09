@@ -56,7 +56,13 @@
   },
   "postcss": {
     "plugins": {
-      "autoprefixer": {}
+      "autoprefixer": {
+        "browsers": [
+          "ie >= 9",
+          "Android >= 4",
+          "iOS >= 9"
+        ]
+      }
     }
   },
   "browserslist": [

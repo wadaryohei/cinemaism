@@ -3,7 +3,7 @@
 CINEMAISM [https://cinemaism.net/](https://cinemaism.net/)
 
 ## CINEMAISMとは？
-CINEMAISMはあなたのムービーライフをより充実に過ごすための視聴管理TODOアプリです。
+CINEMAISMはあなたのムービーライフをより充実に過ごすための視聴管理Watchリストアプリです。
 映画のタイトルに関する検索や、いま巷で人気な映画などを、自分だけのインボックスに保存して管理することが出来ます。
 
 ## 3ステップで分かる使い方

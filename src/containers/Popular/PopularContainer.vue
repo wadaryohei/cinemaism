@@ -35,6 +35,7 @@ import BaseLayout from '@/components/_shared/BaseLayout.vue'
 import MovieList from '@/components/MovieList/MovieList.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
 import { UseFetchDataComposition } from '@/composition/UseFetchDataComposition'
+import { UseVuexComposition } from '@/composition/UseVuexComposition'
 import { UseAPIComposition } from '@/composition/UseAPIComposition'
 import { UseSearchComposition } from '@/composition/UseSearchComposition'
 import { UsePresenterComposition } from '@/composition/UsePresenterComposition'
@@ -48,7 +49,8 @@ export default defineComponent({
   name: 'PopularContainer',
   components: { BaseLayout, MovieList, Pagination },
   setup (props, context: SetupContext) {
-    const pageNumber = context.root.$route.query.page
+    const vuex = UseVuexComposition(context)
+    const pageNumber = vuex.stores('getters', 'pageCount/pageCountGetters')
     const API = UseAPIComposition()
     const fetch = UseFetchDataComposition(context)
     const search = UseSearchComposition(context)

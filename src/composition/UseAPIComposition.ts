@@ -31,9 +31,9 @@ export const UseAPIComposition = (): APIComposition => {
       case 'popular':
         // queryParamsが渡されなかった場合はqueryParamsを抜いたエンドポイントを叩く
         if (queryParams === null || queryParams === undefined) {
-          return `${FetchPath.popular.path}/?page=${pageCount}&api_key=${FetchAPI.apiKey}&language=${FetchAPI.language}`
+          return `${FetchPath.popular.path}?page=${pageCount}&api_key=${FetchAPI.apiKey}&language=${FetchAPI.language}`
         } else {
-          return `${FetchPath.popular.path}/?page=${pageCount}&api_key=${FetchAPI.apiKey}&language=${FetchAPI.language}`
+          return `${FetchPath.popular.path}?page=${pageCount}&api_key=${FetchAPI.apiKey}&language=${FetchAPI.language}`
         }
       case 'videos':
         return `${FetchPath.movie.path}/${queryParams}/videos?api_key=${FetchAPI.apiKey}&language=${FetchAPI.language}`

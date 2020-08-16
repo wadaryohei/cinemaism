@@ -6,6 +6,7 @@
     <transition-group
       tag="ul"
       name="movieinfo-recommendationlist"
+      :class="{'movieinfo-recommendationlist': (fetch.loading.value)}"
       out-in
       appear
     >

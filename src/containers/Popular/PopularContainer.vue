@@ -12,6 +12,7 @@
       <transition-group
         tag="ul"
         name="movie-list"
+        :class="{'movie-list': (fetch.loading.value)}"
         appear
         out-in
       >
@@ -61,10 +62,12 @@ export default defineComponent({
      * Movie情報を取得するFetchの初期化処理
      */
     async function initFetch (pageNumber: string | (string | null)[]) {
+      fetch.loading.value = true
       const fetchDatas = await fetch.fetchMovieSearchData(API.APIPathPopular(pageNumber))
       const searchPresenter = UseSearchPresenter(fetchDatas, fetch.responseDataCount(), pageNumber)
       await presenter.presenterDatas<SearchPresenter>(searchPresenter)
       window.scrollTo(0, 0)
+      fetch.loading.value = false
     }
 
     // ================================

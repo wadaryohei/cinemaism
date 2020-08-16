@@ -40,7 +40,6 @@ export const UseStorageComposition = (context: SetupContext): StorageComposition
     alert('すべて削除しました')
     vuex.stores('commit', 'inbox/countStorages', 0)
     window.location.reload()
-    window.scrollTo(0, 0)
   }
 
   /**
@@ -112,7 +111,6 @@ export const UseStorageComposition = (context: SetupContext): StorageComposition
         resolve(vuex.stores('commit', 'inbox/countStorages', storageCount()))
       }).then(() => {
         window.location.reload()
-        window.scrollTo(0, 0)
       })
     }
   }

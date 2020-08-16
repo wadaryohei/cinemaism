@@ -5,18 +5,18 @@
         <Loading message="Loading..." />
       </section>
 
-      <section v-if="presenter.datas()">
+      <section v-if="!fetch.loading.value">
         <div>
           <Modal v-if="modal.showModal()" message="保存しました" @close="modal.closeModal()" />
 
           <MovieInfoBg :backdropPath="presenter.datas().viewDatas().fetchMovieDatas.backdropPath" />
           <article class="movie-wrapper">
             <div class="movieinfo-backdrop-wrapper">
-              <transition name="movieinfo-backdrop" tag="div" appear>
+              <transition name="movieinfo-backdrop" :class="{'movieinfo-backdrop': (fetch.loading.value)}" tag="div" appear>
                 <MovieInfoBackDrop :backdropPath="presenter.datas().viewDatas().fetchMovieDatas.backdropPath" />
               </transition>
 
-              <transition name="movieinfo-link" tag="div" appear>
+              <transition name="movieinfo-link" :class="{'movieinfo-link': (fetch.loading.value)}" tag="div" appear>
                 <MovieInfoLink
                   :homepage="presenter.datas().viewDatas().fetchMovieDatas.homepage"
                   :video="presenter.datas().viewDatas().fetchVideoDatas"
@@ -27,7 +27,7 @@
             <div class="movieinfo-wrapper">
               <section class="movieinfo-section">
                 <div class="movieinfo-poster-wrapper">
-                  <transition name="movieinfo-poster" tag="div" appear>
+                  <transition name="movieinfo-poster" :class="{'movieinfo-poster': (fetch.loading.value)}" tag="div" appear>
                     <MovieInfoPoster
                       :posterPath="presenter.datas().viewDatas().fetchMovieDatas.posterPath"
                       :alt="presenter.datas().viewDatas().fetchMovieDatas.originalTitle"
@@ -36,18 +36,18 @@
                 </div>
 
                 <div class="movieinfo-heading-wrapper">
-                  <transition name="movieinfo-heading" tag="div" appear>
+                  <transition name="movieinfo-heading" :class="{'movieinfo-heading': (fetch.loading.value)}" tag="div" appear>
                     <MovieInfoHeading
                       :originalTitle="presenter.datas().viewDatas().fetchMovieDatas.originalTitle"
                       :releaseDate="presenter.datas().viewDatas().fetchMovieDatas.releaseDate"
                     />
                   </transition>
 
-                  <transition name="movieinfo-genre" tag="div" appear>
+                  <transition name="movieinfo-genre" :class="{'movieinfo-genre': (fetch.loading.value)}" tag="div" appear>
                     <MovieInfoGenre :genres="presenter.datas().viewDatas().fetchMovieDatas.genres" />
                   </transition>
 
-                  <transition name="movieinfo-average" tag="div" appear>
+                  <transition name="movieinfo-average" :class="{'movieinfo-average': (fetch.loading.value)}" tag="div" appear>
                     <MovieInfoAverage :voteAverage="presenter.datas().viewDatas().fetchMovieDatas.voteAverage" />
                   </transition>
                 </div>
@@ -55,7 +55,7 @@
 
               <section>
                 <div class="movieinfo-overview-wrapper">
-                  <transition name="movieinfo-overview" tag="div"  appear v-if="presenter.datas().viewDatas().fetchMovieDatas.overview">
+                  <transition name="movieinfo-overview" :class="{'movieinfo-overview': (fetch.loading.value)}" tag="div" appear v-if="presenter.datas().viewDatas().fetchMovieDatas.overview">
                     <MovieInfoOverView :overview="presenter.datas().viewDatas().fetchMovieDatas.overview" />
                   </transition>
                 </div>
@@ -63,7 +63,7 @@
 
               <section>
                 <div class="movieinfo-save-wrapper">
-                  <transition name="movieinfo-save" tag="div" appear>
+                  <transition name="movieinfo-save" :class="{'movieinfo-save': (fetch.loading.value)}" tag="div" appear>
                     <MovieInfoSave
                       :modal="modal"
                       :storage="storage"
@@ -145,14 +145,15 @@ export default defineComponent({
     /**
      * Movie情報を取得するFetchの初期化処理
      */
-    async function initFetch (paramsId: string | (string | null)[] | number | null): Promise<void> {
+    async function initFetch (paramsId: string): Promise<void> {
       fetch.loading.value = true
-      const fetchMovieDatas = await fetch.fetchMovieSelectedData(API.APIPath('movie', paramsId))
-      const fetchVideoDatas = await fetch.fetchMovieVideosData(API.APIPath('videos', paramsId))
-      const fetchRecommendDatas = await fetch.fetchMovieRecommendData(API.APIPath('recommendations', paramsId))
+      const fetchMovieDatas = await fetch.fetchMovieSelectedData(API.APIPathMovie(paramsId))
+      const fetchVideoDatas = await fetch.fetchMovieVideosData(API.APIPathVideos(paramsId))
+      const fetchRecommendDatas = await fetch.fetchMovieRecommendData(API.APIPathRecommendations(paramsId))
       const moviePresenter = UseMoviePresenter(fetchMovieDatas, fetchVideoDatas, fetchRecommendDatas)
       await presenter.presenterDatas<MoviePresenter>(moviePresenter)
       fetch.loading.value = false
+      window.scrollTo(0, 0)
     }
 
     // ================================
@@ -167,7 +168,6 @@ export default defineComponent({
     // ================================
     watch(() => context.root.$route, async (newRoute) => {
       await initFetch(newRoute.params.id)
-      window.scrollTo(0, 0)
     })
 
     return {

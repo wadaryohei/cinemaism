@@ -33,5 +33,6 @@ export default defineComponent({
   line-height: 60px;
   font-size: 1.4rem;
   letter-spacing: 1rem;
+  text-indent: 1rem;;
 }
 </style>

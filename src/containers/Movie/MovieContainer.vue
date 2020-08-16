@@ -145,14 +145,15 @@ export default defineComponent({
     /**
      * Movie情報を取得するFetchの初期化処理
      */
-    async function initFetch (paramsId: string | (string | null)[] | number | null): Promise<void> {
+    async function initFetch (paramsId: string): Promise<void> {
       fetch.loading.value = true
-      const fetchMovieDatas = await fetch.fetchMovieSelectedData(API.APIPath('movie', paramsId))
-      const fetchVideoDatas = await fetch.fetchMovieVideosData(API.APIPath('videos', paramsId))
-      const fetchRecommendDatas = await fetch.fetchMovieRecommendData(API.APIPath('recommendations', paramsId))
+      const fetchMovieDatas = await fetch.fetchMovieSelectedData(API.APIPathMovie(paramsId))
+      const fetchVideoDatas = await fetch.fetchMovieVideosData(API.APIPathVideos(paramsId))
+      const fetchRecommendDatas = await fetch.fetchMovieRecommendData(API.APIPathRecommendations(paramsId))
       const moviePresenter = UseMoviePresenter(fetchMovieDatas, fetchVideoDatas, fetchRecommendDatas)
       await presenter.presenterDatas<MoviePresenter>(moviePresenter)
       fetch.loading.value = false
+      window.scrollTo(0, 0)
     }
 
     // ================================
@@ -167,7 +168,6 @@ export default defineComponent({
     // ================================
     watch(() => context.root.$route, async (newRoute) => {
       await initFetch(newRoute.params.id)
-      window.scrollTo(0, 0)
     })
 
     return {

@@ -46,6 +46,7 @@ export default defineComponent({
     onMounted(async () => {
       const homePresenter = UseHomePresenter(storage.currentStorages(localStorage.getItem('movies')), storage.storageCount())
       await presenter.presenterDatas<HomePresenter>(homePresenter)
+      window.scrollTo(0, 0)
     })
 
     return {

@@ -53,9 +53,10 @@ export default defineComponent({
      * Movie情報を取得するFetchの初期化処理
      */
     async function initFetch (query: string | (string | null)[]) {
-      const fetchDatas = await fetch.fetchMovieSearchData(API.APIPath('search', query))
+      const fetchDatas = await fetch.fetchMovieSearchData(API.APIPathSearch(query))
       const searchPresenter = UseSearchPresenter(fetchDatas, fetch.responseDataCount(), query)
       await presenter.presenterDatas<SearchPresenter>(searchPresenter)
+      window.scrollTo(0, 0)
     }
 
     // ================================
@@ -70,7 +71,6 @@ export default defineComponent({
     // ================================
     watch(() => context.root.$route, async (newRoute) => {
       await initFetch(newRoute.query.q)
-      window.scrollTo(0, 0)
     })
 
     return {

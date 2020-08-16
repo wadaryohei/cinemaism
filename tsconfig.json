@@ -15,6 +15,10 @@
       "webpack-env",
       "jest"
     ],
+    "typeRoots": [
+      "./@types", // 自作の型定義ファイル
+      "./node_modules/@types"
+    ],
     "paths": {
       "@/*": [
         "src/*"

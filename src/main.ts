@@ -5,7 +5,7 @@ import router from './router'
 import store from './store'
 import axios, { AxiosStatic } from 'axios'
 import VueAnalytics from 'vue-analytics'
-import '@/fontAwesome.js'
+import '@/model/_shared/fontAwesome.js'
 import '@/assets/sass/style.scss'
 
 declare module 'vue/types/vue' {

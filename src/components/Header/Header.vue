@@ -9,6 +9,11 @@
       :activeMenu="nav.activeMenu"
       :toggleMenu="nav.toggleMenu"
      />
+    <Overlay
+      v-if="nav.activeMenu()"
+      :activeMenu="nav.activeMenu"
+      :toggleMenu="nav.toggleMenu"
+    />
   </header>
 </template>
 
@@ -18,6 +23,7 @@ import Nav from '@/components/Nav/Nav.vue'
 import Inbox from '@/components/Header/Inbox/Inbox.vue'
 import Heading from '@/components/Header/Heading/Heading.vue'
 import Bars from '@/components/Header/Bars/Bars.vue'
+import Overlay from '@/components/Overlay/Overlay.vue'
 import { UseNavComposition } from '@/composition/UseNavComposition'
 import { UseRouteComposition } from '@/composition/UseRouteComposition'
 import { UseStorageComposition } from '@/composition/UseStorageComposition'
@@ -29,7 +35,7 @@ import { NavListDatas } from '@/model/NavListDatas'
 // ================================
 export default defineComponent({
   name: 'Header',
-  components: { Nav, Inbox, Heading, Bars },
+  components: { Nav, Inbox, Heading, Bars, Overlay },
   setup (props, context: SetupContext) {
     const nav = UseNavComposition()
     const vuex = UseVuexComposition(context)

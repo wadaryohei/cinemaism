@@ -4,9 +4,10 @@
       <h3 class="movieinfo-recommendationheader">あなたにオススメの作品</h3>
     </transition>
     <transition-group
-      tag="ul"
-      name="movieinfo-recommendationlist"
+      v-if="!fetch.loading.value"
       :class="{'movieinfo-recommendationlist': (fetch.loading.value)}"
+      name="movieinfo-recommendationlist"
+      tag="ul"
       out-in
       appear
     >
@@ -55,35 +56,29 @@ export default defineComponent({
   padding: 0 10px;
   margin-bottom: 10px;
   word-break: break-all;
-
-  &-enter-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: 1s ease;
-    transition-delay: 1.4s;
-  }
-
-  &-enter,
-  &-leave-to {
-    opacity: 0;
-    transform: translateY(20px);
-  }
 }
 
 .movieinfo-recommendationlist {
   @include l-row;
 
-  &-enter-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: 1s ease;
-    transition-delay: 1.8s;
-  }
-
   &-enter,
   &-leave-to {
     opacity: 0;
     transform: translateY(20px);
+    transition: .4s ease;
+  }
+
+  &-leave,
+  &-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+    transition: .8s ease;
+
+    @for $i from 1 through 20 {
+      &:nth-of-type(#{$i}) {
+        transition-delay: #{100ms * $i};
+      }
+    }
   }
 }
 

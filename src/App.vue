@@ -1,20 +1,22 @@
 <template>
   <div id="app">
-    <div class="l-container l-wrapper">
-      <Overlay v-if="nav.isMenuActive" />
-      <router-view />
-    </div>
+      <ScrollTop />
+      <div class="l-container l-wrapper">
+        <Overlay v-if="nav.isMenuActive" />
+        <router-view />
+      </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import Overlay from '@/components/Overlay/Overlay.vue'
+import ScrollTop from '@/components/ScrollTop/ScrollTop.vue'
 import { UseNavComposition } from '@/composition/UseNavComposition'
 
 export default defineComponent({
   name: 'App',
-  components: { Overlay },
+  components: { Overlay, ScrollTop },
   setup () {
     const nav = UseNavComposition()
     return {

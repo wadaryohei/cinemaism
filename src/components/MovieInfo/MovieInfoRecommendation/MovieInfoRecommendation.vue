@@ -38,7 +38,7 @@ export type MovieInfoRecommendationProps = {
 export default defineComponent({
   name: 'MovieInfoRecommendation',
   components: { MovieList },
-  props: ['recommends'],
+  props: ['recommends', 'fetch'],
   setup (props: MovieInfoRecommendationProps) {
     return {
       props

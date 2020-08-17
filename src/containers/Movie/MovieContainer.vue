@@ -77,6 +77,7 @@
                 <div class="movieinfo-recommendation-wrapper">
                   <div class="movieinfo-recommendation">
                     <MovieInfoRecommendation
+                      :fetch="fetch"
                       :recommends="presenter.datas().viewDatas().fetchRecommendDatas"
                     />
                   </div>

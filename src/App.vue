@@ -1,28 +1,21 @@
 <template>
   <div id="app">
-      <ScrollTop />
-      <div class="l-container l-wrapper">
-        <Overlay v-if="nav.isMenuActive" />
+    <ScrollTop>
+      <Wrapper>
         <router-view />
-      </div>
+      </Wrapper>
+    </ScrollTop>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import Overlay from '@/components/Overlay/Overlay.vue'
+import Wrapper from '@/components/Wrapper/Wrapper.vue'
 import ScrollTop from '@/components/ScrollTop/ScrollTop.vue'
-import { UseNavComposition } from '@/composition/UseNavComposition'
 
 export default defineComponent({
   name: 'App',
-  components: { Overlay, ScrollTop },
-  setup () {
-    const nav = UseNavComposition()
-    return {
-      nav
-    }
-  }
+  components: { Wrapper, ScrollTop }
 })
 </script>
 
@@ -51,14 +44,4 @@ body {
     background-size: cover;
   }
 }
-
-.l-wrapper {
-  padding: 160px 0 120px 0;
-  position: relative;
-
-  @include max(1015) {
-    padding: 120px 0;
-  }
-}
-
 </style>

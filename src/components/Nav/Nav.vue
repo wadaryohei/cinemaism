@@ -42,6 +42,7 @@ export default defineComponent({
   width: 300px;
   height: 100vh;
   position: fixed;
+  z-index: 1;
   top: 0;
   right: 0;
   overflow: hidden;

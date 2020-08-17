@@ -1,3 +1,9 @@
+<template>
+  <div>
+    <slot></slot>
+  </div>
+</template>
+
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api'
 

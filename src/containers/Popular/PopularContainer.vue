@@ -10,6 +10,7 @@
 
       <!-- 取得したデータが存在する場合 -->
       <transition-group
+        v-if="!fetch.loading.value"
         tag="ul"
         name="movie-list"
         :class="{'movie-list': (fetch.loading.value)}"
@@ -66,8 +67,8 @@ export default defineComponent({
       const fetchDatas = await fetch.fetchMovieSearchData(API.APIPathPopular(pageNumber))
       const searchPresenter = UseSearchPresenter(fetchDatas, fetch.responseDataCount(), pageNumber)
       await presenter.presenterDatas<SearchPresenter>(searchPresenter)
-      window.scrollTo(0, 0)
       fetch.loading.value = false
+      window.scrollTo(0, 0)
     }
 
     // ================================

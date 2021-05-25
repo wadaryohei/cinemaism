@@ -7,7 +7,7 @@ export type AboutInfoListType = {
 
 export const AboutInfoIntroDatas: AboutInfoListType = {
   id: 0,
-  src: `${require('../assets/movie_01.png')}`,
+  src: `${require('../assets/movie_01.jpg')}`,
   heading: 'CINEMAISMとは',
   lead: 'CINEMAISMはあなたのムービーライフをより充実に過ごすための視聴管理TODOアプリです。映画のタイトルに関する検索や、いま巷で人気な映画などを、自分だけのインボックスに保存して管理することが出来ます。'
 }

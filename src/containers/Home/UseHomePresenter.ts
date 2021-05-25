@@ -45,7 +45,7 @@ export const UseHomePresenter = (
   function defaultImage (): defaultImageType {
     return {
       src: `${require('../../assets/logo.png')}`,
-      bgSrc: `${require('../../assets/movie_01.png')}`,
+      bgSrc: `${require('../../assets/movie_01.jpg')}`,
       alt: 'CINEMAISM'
     }
   }
